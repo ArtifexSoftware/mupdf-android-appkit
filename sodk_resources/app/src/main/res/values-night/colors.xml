@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This file contains color overrides for dark mode. -->
+
+<resources>
+
+    <!-- Dark Mode Redefined/New Colors -->
+    <color name="sodk_editor_palette_black">#111111</color>
+    <color name="sodk_editor_palette_ltgrey">#999999</color>
+
+    <!-- Dark Mode Color Palette -->
+    <color name="sodk_editor_main_bg_color">@color/sodk_editor_palette_olive_drab</color>
+    <color name="sodk_editor_panels_bg_color">@color/sodk_editor_palette_black</color>
+    <color name="sodk_editor_icon_color">@color/sodk_editor_palette_silver_1</color>
+    <color name="sodk_editor_highlighted_text_color">@color/sodk_editor_palette_white</color>
+    <color name="sodk_editor_outline_color">@color/sodk_editor_palette_ltgrey</color>
+    <color name="sodk_editor_placeholder_text_color">@color/sodk_editor_palette_dim_grey_1</color>
+
+    <!-- Resource Colors For Drawables/Layouts -->
+
+    <!-- Document Editor Toolbar Color -->
+    <color name="sodk_editor_toolbar">@color/sodk_editor_panels_bg_color</color>
+    <!-- Document Edit Toolbar Font Name/Picker Bg Color -->
+    <color name="sodk_editor_edit_toolbar_bg">@color/sodk_editor_toolbar</color>
+
+    <!-- The color for icons containing a single color. -->
+    <color name="sodk_editor_icon_tint">@color/sodk_editor_icon_color</color>
+
+    <!-- The color for the find icon in the find box. -->
+    <color name="sodk_editor_find_icon_tint">@color/sodk_editor_outline_color</color>
+
+    <!-- Phone Hanmburger Icon Color -->
+    <color name="sodk_editor_icon_tab_menu_color">@color/sodk_editor_icon_color</color>
+
+    <!-- Document Editor Footer Colors -->
+    <color name="sodk_editor_footer">@color/sodk_editor_panels_bg_color</color>
+    <color name="sodk_editor_footer_text">@color/sodk_editor_outline_color</color>
+    <color name="sodk_editor_footer_page_text">@color/sodk_editor_icon_color</color>
+
+    <!-- Button Icon State Colors. -->
+    <color name="sodk_editor_button_icon_normal">@color/sodk_editor_icon_color</color>
+    <color name="sodk_editor_button_icon_selected">@color/sodk_editor_panels_bg_color</color>
+
+    <!-- Button Background State Colors. -->
+    <color name="sodk_editor_button_selected">@color/sodk_editor_icon_color</color>
+    <color name="sodk_editor_button_selected2">@color/sodk_editor_placeholder_text_color</color>
+    <color name="sodk_editor_button_pressed">@color/sodk_editor_icon_color</color>
+    <color name="sodk_editor_button_text">@color/sodk_editor_icon_color</color>
+    <color name="sodk_editor_button_tint">@color/sodk_editor_palette_white</color>
+
+    <!-- Author Dialog Text Color-->
+    <color name="sodk_editor_author_textcolor">@color/sodk_editor_highlighted_text_color</color>
+
+    <!-- Menu Popup Doalog Colors -->
+    <color name="sodk_editor_menu_popup_border_color">@color/sodk_editor_outline_color</color>
+    <color name="sodk_editor_menu_popup_background_color">@color/sodk_editor_panels_bg_color</color>
+    <color name="sodk_editor_menu_popup_text_color">@color/sodk_editor_icon_color</color>
+
+    <!-- Color Picker Dialog Colors -->
+    <color name="sodk_editor_picker_bg_color">@color/sodk_editor_palette_bluish_grey</color>
+    <color name="sodk_editor_picker_stroke_color">@color/sodk_editor_palette_grey_1</color>
+    <color name="sodk_editor_picker_text_color">@color/sodk_editor_palette_white</color>
+
+    <!-- Shape Picker Dialog Colors -->
+    <color name="sodk_editor_shape_picker_bg_color">@color/sodk_editor_picker_bg_color</color>
+    <color name="sodk_editor_shape_picker_text_color">@color/sodk_editor_picker_text_color</color>
+
+    <!-- Document View Background Color -->
+    <color name="sodk_editor_doc_background">@color/sodk_editor_main_bg_color</color>
+    <!-- Document Pages View Border Colors -->
+    <color name="sodk_editor_page_border_color">@color/sodk_editor_main_bg_color</color>
+    <!-- Document Pages View Sub-Menu -->
+    <color name="sodk_editor_page_menu_stroke">@color/sodk_editor_palette_white</color>
+    <color name="sodk_editor_page_menu_fill">@color/sodk_editor_palette_black</color>
+
+    <!-- Document Type 'Other' Back Button Color -->
+    <color name="sodk_editor_other_back_button_tint">@color/sodk_editor_palette_white</color>
+
+    <!-- Font Color Picker Button Icon Color-->
+
+    <!-- Font Name/Size Box -->
+    <color name="sodk_editor_font_text_box_border">@color/sodk_editor_outline_color</color>
+    <color name="sodk_editor_font_select_text_enabled">@color/sodk_editor_icon_color</color>
+    <color name="sodk_editor_font_select_text_disabled">@color/sodk_editor_outline_color</color>
+
+    <color name="sodk_editor_wheel_item_text_color">@color/sodk_editor_icon_color</color>
+
+    <!-- Font Increment/Decrement Color-->
+    <color name="sodk_editor_font_inc_dec_color">@color/sodk_editor_icon_color</color>
+
+    <!-- Search Icon/Tab Colors -->
+    <color name="sodk_editor_icon_search_stroke">@color/sodk_editor_outline_color</color>
+    <color name="sodk_editor_icon_search_fill">@color/sodk_editor_panels_bg_color</color>
+    <color name="sodk_editor_search_tab_stroke">@color/sodk_editor_outline_color</color>
+    <color name="sodk_editor_search_tab_fill">@color/sodk_editor_panels_bg_color</color>
+    <!-- Search Box Colors -->
+    <color name="sodk_editor_search_text_hint">@color/sodk_editor_placeholder_text_color</color>
+    <color name="sodk_editor_search_text">@color/sodk_editor_icon_color</color>
+
+    <!-- Excel Colors -->
+
+    <!-- Excel Sheet Button Colors -->
+    <color name="sodk_editor_sheet_button_normal">@color/sodk_editor_palette_taupe_grey</color>
+    <color name="sodk_editor_sheet_button_selected">@color/sodk_editor_palette_french_blue</color>
+    <color name="sodk_editor_sheet_button_selected_stroke">@color/sodk_editor_palette_olive_drab</color>
+
+    <!-- Excel Alignmet Dialog/Button Colors -->
+    <color name="sodk_editor_alignment_dialog_background">@color/sodk_editor_palette_feldgrau</color>
+
+    <!-- Excel Format Cell Box Colors -->
+    <color name="sodk_editor_cell_box_disabled_fill">@color/sodk_editor_panels_bg_color</color>
+    <color name="sodk_editor_cell_box_disabled_stroke">@color/sodk_editor_outline_color</color>
+    <color name="sodk_editor_cell_box_focused_fill">@color/sodk_editor_panels_bg_color</color>
+    <color name="sodk_editor_cell_box_focused_stroke">@color/sodk_editor_icon_color</color>
+    <color name="sodk_editor_cell_box_deselected_fill">@color/sodk_editor_panels_bg_color</color>
+    <color name="sodk_editor_cell_box_deselected_stroke">@color/sodk_editor_outline_color</color>
+    <color name="sodk_editor_cell_box_text_color">@color/sodk_editor_icon_color</color>
+
+    <!-- Excel Sheets Tabs-->
+    <color name="sodk_editor_excel_sheet_tab_stroke">@color/sodk_editor_palette_olive_drab</color>
+    <color name="sodk_editor_excel_sheet_tab_plus_stroke">@color/sodk_editor_palette_olive_drab</color>
+    <color name="sodk_editor_excel_sheet_tab_not_selected">@color/sodk_editor_palette_black</color>
+    <color name="sodk_editor_excel_sheet_tab_plus_color">@color/sodk_editor_palette_black</color>
+
+    <!-- PDF Pages View Background -->
+    <color name="sodk_editor_pdf_pages_bg">@color/sodk_editor_panels_bg_color</color>
+
+    <!-- PDF TOC Colors -->
+    <color name="sodk_editor_toc_bg_color">@color/sodk_editor_placeholder_text_color</color>
+    <color name="sodk_editor_toc_title_textcolor">@color/sodk_editor_highlighted_text_color</color>
+    <color name="sodk_editor_toc_cancel_textcolor">@color/sodk_editor_highlighted_text_color</color>
+    <color name="sodk_editor_toc_divider_color">@color/sodk_editor_outline_color</color>
+    <!-- PDF TOC Link Pressed Fill Color -->
+    <color name="sodk_editor_toc_link_fill">@color/sodk_editor_outline_color</color>
+
+    <!-- Powerpoint/PDF Line Width Dialog Text Color-->
+    <color name="sodk_editor_line_width_item_textcolor">@color/sodk_editor_wheel_item_text_color</color>
+
+    <!-- Dialog text color -->
+    <color name="sodk_editor_dialog_textcolor">@color/sodk_editor_palette_white</color>
+
+    <color name="sodk_editor_filename_textcolor">@color/sodk_editor_palette_silver_1</color>
+    <color name="sodk_editor_extension_textcolor">@color/sodk_editor_palette_dim_grey_1</color>
+
+    <!-- for fading scroll indicators -->
+    <color name="sodk_editor_scroll_ind_color1">#77ffffff</color>
+    <color name="sodk_editor_scroll_ind_color2">#00000000</color>
+
+    <color name="sodk_editor_page_default_bg_color">#ff000000</color>
+
+    <color name="sodk_editor_redact_resize_color">#7f2572ac</color>
+    <!-- for dialog borders -->
+    <color name="sodk_editor_dialog_border">@color/sodk_editor_palette_white</color>
+
+    <!-- for the content border-->
+    <color name="sodk_editor_content_border">@color/sodk_editor_palette_silver</color>
+
+    <!-- Document Type Header Colors -->
+    <color name="sodk_editor_header_doc_color">#0f3e60</color>
+    <color name="sodk_editor_header_xls_color">#004c2d</color>
+    <color name="sodk_editor_header_ppt_color">#c04327</color>
+    <color name="sodk_editor_header_pdf_color">#731415</color>
+    <color name="sodk_editor_header_epub_color">#425c0b</color>
+    <color name="sodk_editor_header_xps_color">#1c6083</color>
+
+    <!--Tab Selected/UnSelected Text Color -->
+    <color name="sodk_editor_header_text_color">@color/sodk_editor_palette_silver</color>
+    <color name="sodk_editor_header_text_color_selected">@color/sodk_editor_palette_white</color>
+
+    <!--Header button Selected/UnSelected Color -->
+    <color name="sodk_editor_header_button_enabled_tint">@color/sodk_editor_palette_white</color>
+    <color name="sodk_editor_header_button_disabled_tint">@color/sodk_editor_palette_dim_grey_1</color>
+
+    <!--Full screen button Color -->
+    <color name="sodk_editor_fullscreen_icon_color">@color/sodk_editor_palette_white</color>
+    <color name="sodk_editor_fullscreen_icon_other_color">@color/sodk_editor_palette_white</color>
+
+    <!-- Tablet Dcoument Tab Border Color. -->
+    <color name="sodk_editor_tab_stroke">@color/sodk_editor_palette_white</color>
+
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/WhiteSmoke"
+    android:id="@+id/device_files_wrapper">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Title Text View -->
+        <TextView
+            android:id="@+id/fileListViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center" 
+            android:fontFamily="sans-serif-condensed" 
+            android:textSize="30dp"
+            android:textColor="@color/Black"/>  
+
+        <!-- Separator -->
+        <View
+            android:id="@+id/sep1"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/DarkGray"/>
+
+        <!-- File List View -->
+        <ListView
+            android:id="@+id/fileListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@color/DarkGray"
+            android:dividerHeight="1dp"
+            android:choiceMode="singleChoice"/>
+
+        <!-- Document Configuration List View -->
+        <ListView
+            android:id="@+id/configListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@color/DarkGray"
+            android:dividerHeight="1dp"
+            android:visibility="gone"
+            android:choiceMode="none"/>
+
+        <!-- End Of List View Separator -->
+        <View
+            android:id="@+id/sep2"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/DarkGray"/>
+
+        <!-- Fill At End Of List View To Avoid Submit Button Overlaying
+             Multi-Choice List Content -->
+        <View
+            android:id="@+id/buffer"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <!-- Submit Button For Multi-Choice List View -->
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:text='@string/submit' />
+
+    <!-- Progress Spinner -->
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

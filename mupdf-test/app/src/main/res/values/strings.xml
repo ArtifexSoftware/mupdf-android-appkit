@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">MuPDF Test</string>
+    <string name="version">1.0</string>
+    <string name="no_media_warning">Storage media not present</string>
+    <string name="no_media_hint">Sharing the storage media with a PC can make it inaccessible</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="password">Password</string>
+    <string name="submit">Submit</string>
+    <string name="picker_title_App_Ver_Dir">%1$s %2$s: %3$s</string>
+    <string name="parent_directory">[Up one level]</string>
+
+    <!-- Application Titles -->
+    <string name="doc_editor_example">Document Editor Example</string>
+    <string name="png_export_example">PNG Document Export Example</string>
+
+    <!-- Example Application Choices -->
+    <string name="examples_titles">MuPDF Library Examples</string>
+
+    <string-array name="examples_array">
+        <item>Standalone Document Conversion To PNG</item>
+        <item>Full Document Editor</item>
+        <item>Full Document Editor (custom UI)</item>
+        <item>Full Document Editor (custom UI, Kotlin)</item>
+    </string-array>
+
+    <!-- Document Editor Configuration Options -->
+    <string-array name="config_array">
+        <item>Editing Enable</item>
+        <item>Save As Enable</item>
+        <item>Open In Enable</item>
+        <item>Sharing Enable</item>
+        <item>External Clipboard In Enable</item>
+        <item>External Clipboard Out Enable</item>
+        <item>Printing Enable</item>
+        <item>Launch External Url Enable</item>
+        <item>Form Filling Enable</item>
+        <item>Form Signing Enable</item>
+        <item>Redactions Enable</item>
+        <item>Full Screen Enable</item>
+        <item>Invert Content In Dark Mode</item>
+    </string-array>
+
+    <!-- PNG Document Export Dialogue Strings -->
+    <string name="png_export_title_success">PNG Export Complete</string>
+    <string name="png_export_title_fail">PNG Export Failed</string>
+
+    <!-- PDF Document Export Dialogue Strings -->
+    <string name="pdf_export_title_success">PDF Export Complete</string>
+    <string name="pdf_export_title_fail">PDF Export Failed</string>
+
+    <!-- PDF Images Export Dialogue Strings -->
+    <string name="pdf_images_export_title_success">PDF Export Complete</string>
+    <string name="pdf_images_export_title_fail">PDF Export Failed</string>
+
+    <!-- Common Export Dialogue Strings -->
+    <string name="export_file_message">Exported To File:</string>
+    <string name="export_folder_message">Exported To Folder</string>
+    <string name="export_button1">View</string>
+
+</resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf8"?>
+<FictionBook xmlns:l="http://www.w3.org/1999/xlink" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0">
+  <description>
+    <title-info>
+      <genre>fiction</genre>
+      <author>
+        <first-name>John</first-name>
+        <last-name>Doe</last-name>
+      </author>
+      <book-title>Fiction Book</book-title>
+      <annotation>
+        <p>Hello</p>
+      </annotation>
+      <keywords>john, doe, fiction</keywords>
+      <date value="2011-07-18">18.07.2011</date>
+      <coverpage></coverpage>
+      <lang>en</lang>
+    </title-info>
+    <document-info>
+      <author>
+        <first-name></first-name>
+        <last-name></last-name>
+        <nickname></nickname>
+      </author>
+      <program-used>Fb2 Gem</program-used>
+      <date value="2011-07-18">18.07.2011</date>
+      <src-url></src-url>
+      <src-ocr></src-ocr>
+      <id></id>
+      <version>1.0</version>
+    </document-info>
+    <publish-info>
+    </publish-info>
+  </description>
+  <body>
+    <title>
+      <p>John Doe</p>
+      <empty-line/>
+      <p>Fiction Book</p>
+    </title>
+    <section>
+      <title>
+        <p>Chapter 1</p>
+      </title>
+      <p>Line one of the first chapter</p>
+      <p>Line two of the first chapter</p>
+      <p>Line three of the first chapter</p>
+    </section>
+    <section>
+      <title>
+        <p>Chapter 2</p>
+      </title>
+      <p>Line one of the second chapter</p>
+      <p>Line two of the second chapter</p>
+      <p>Line three of the second chapter</p>
+      <p>Line four of the second chapter</p>
+    </section>
+  </body>
+</FictionBook>

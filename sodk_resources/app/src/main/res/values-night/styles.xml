@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This file contains style overrides for dark mode. -->
+
+<resources>
+
+    <style name="sodk_editor_toolbar_font_button_no_text" parent="@style/sodk_editor_toolbar_button">
+        <item name="android:tint">@color/sodk_editor_font_select_text_disabled</item>
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">@color/sodk_editor_font_select_text_disabled</item>
+    </style>
+
+    <!--toolbar divider-->
+    <style name="sodk_editor_toolbar_divider">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">2dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:background">@color/sodk_editor_palette_ltgrey</item>
+        <item name="android:tag">toolbar_divider</item>
+    </style>
+
+    <style name="sodk_editor_page_menu_divider_style">
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@color/sodk_editor_palette_white</item>
+    </style>
+
+    <style name="sodk_editor_page_menu_item_style">
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@color/sodk_editor_main_bg_color</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/sodk_editor_palette_white</item>
+    </style>
+
+    <style name="sodk_editor_wheel_title_style">
+        <item name="android:textColor">@color/sodk_editor_icon_color</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
+
+    <style name="sodk_editor_alert_edit_text_style">
+        <item name="android:textColor">@color/sodk_editor_highlighted_text_color</item>
+    </style>
+
+    <style name="sodk_editor_alert_dialog_style" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:textColor">@color/sodk_editor_highlighted_text_color</item>
+        <item name="android:buttonStyle">@style/sodk_editor_alert_button_style</item>
+        <item name="android:textColorPrimary">@color/sodk_editor_highlighted_text_color</item>
+        <item name="android:background">@color/sodk_editor_main_bg_color</item>
+    </style>
+
+    <style name="sodk_editor_alert_dialog_style_nodim" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/sodk_editor_highlighted_text_color</item>
+        <item name="android:buttonStyle">@style/sodk_editor_alert_button_style</item>
+        <item name="android:background">@color/sodk_editor_main_bg_color</item>
+        <item name="android:textColorPrimary">@color/sodk_editor_highlighted_text_color</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- Pdf TOC Item Text Box -->
+    <style name="sodk_editor_pdf_toc_text_box_style" >
+        <item name="android:textColor">@color/sodk_editor_highlighted_text_color</item>
+        <item name="android:background">@color/sodk_editor_placeholder_text_color</item>
+    </style>
+
+    <!-- Certificate dialog button colour -->
+    <style name="sodk_editor_dialog_button">
+        <item name="android:color">@color/sodk_editor_palette_azure</item>
+        <item name="android:textColor">@color/sodk_editor_palette_azure</item>
+        <item name="android:background">@color/sodk_editor_palette_dim_grey</item>
+    </style>
+
+</resources>

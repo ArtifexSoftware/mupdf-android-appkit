@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.artifex.mupdf_test"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        vectorDrawables {
+            /*
+             *  Do not generate pngs from vector drawable resources.
+             *
+             *  The vector drawables  can now be used directly on all
+             *  platforms we support.
+             */
+            useSupportLibrary = true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "one-dimension"
+
+    productFlavors {
+        mupdf {
+        }
+    }
+
+    sourceSets {
+        mupdf {
+            java {
+                /*
+                 * Include all files from the main sourceset in this
+                 * release.
+                 */
+                srcDir "src/main"
+            }
+        }
+    }
+}
+
+//  this indicates that the .aar file is required
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'androidx.exifinterface:exifinterface:1.0.0'
+
+    implementation project(path: ':editor')
+    implementation project(path: ':library')
+    implementation project(path: ':mupdf-android-fitz')
+    implementation "androidx.core:core-ktx:+"
+}
+repositories {
+    mavenCentral()
+}
