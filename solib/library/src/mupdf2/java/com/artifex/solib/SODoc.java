@@ -209,6 +209,7 @@ public class SODoc extends ArDkDoc {
     public boolean getSelectionCanBeCopied() {return false;}
 
     public void onDeleteKey() {}
+    public void onForwardDeleteKey() {}
     public void setSelectionText(String s) {}
 
     public static final int SmartOfficeTrackedChangeType_NoChange = 0;

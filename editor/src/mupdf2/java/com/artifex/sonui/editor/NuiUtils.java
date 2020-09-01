@@ -10,5 +10,4 @@ public class NuiUtils {
         return null;
     }
 
-    public static void startSlideshow(Activity activity, SODocSession session) {}
 }
