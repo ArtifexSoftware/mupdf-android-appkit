@@ -74,9 +74,12 @@ public class NUIView extends FrameLayout
         if (mDocView == null && ext.equals("pdf"))
             mDocView = new NUIDocViewPdf(getContext());
 
-        //  check for office types
-        if (mDocView == null)
-            mDocView = NuiUtils.makeNUIView(getContext(), path);
+        //  ask our parent NUIActivity;
+        if (mDocView == null) {
+            NUIActivity activity = (NUIActivity) getContext();
+            if (activity != null)
+                mDocView = activity.makeNUIView(path);
+        }
 
         //  fall back to "other"
         if (mDocView == null)
