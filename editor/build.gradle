@@ -47,7 +47,7 @@ android {
 
         mupdf {
             java {
-                srcDirs "src/main/java", "src/mupdf/java", "src/mupdf2/java"
+                srcDirs "src/main/java", "src/mupdf/java", "src/mupdf2/java", "src/nativeSigning/java"
             }
         }
     }
@@ -81,7 +81,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 
     // include spongycastle pkcs support lib
-    regularImplementation 'com.madgag.spongycastle:core:1.58.0.0'
-    regularImplementation 'com.madgag.spongycastle:prov:1.58.0.0'
-    regularImplementation 'com.madgag.spongycastle:bcpkix-jdk15on:1.58.0.0'
+    implementation 'com.madgag.spongycastle:core:1.58.0.0'
+    implementation 'com.madgag.spongycastle:prov:1.58.0.0'
+    implementation 'com.madgag.spongycastle:bcpkix-jdk15on:1.58.0.0'
 }
