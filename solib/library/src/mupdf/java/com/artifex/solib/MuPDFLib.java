@@ -21,10 +21,17 @@ public class MuPDFLib extends ArDkLib
             Log.w(mDebugTag,"creating new SOLib");
             singleton = new MuPDFLib();
 
+            /*
+             * All apps are required to provide an SOClipboardHandler
+             * implementation.
+             */
             if (mClipboardHandler == null)
             {
-                // Use system clipboard if no application handler is available.
-                setupClipboard(activity);
+                Log.d(mDebugTag,
+                      "No implementation of the SOClipboardHandler " +
+                      "interface found");
+
+                throw new RuntimeException();
             }
         }
 

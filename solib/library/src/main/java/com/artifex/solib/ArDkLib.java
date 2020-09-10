@@ -65,14 +65,6 @@ public abstract class ArDkLib
 
     public abstract ArDkBitmap createBitmap(int w, int h);
 
-    /**
-     * data and function for using the external keyboard
-     */
-    private static ClipboardManager myClipboard;
-    private static ClipboardManager.OnPrimaryClipChangedListener mPrimaryChangeListener;
-    private static int externalCount = 0;
-    public static int getExternalCount() {return externalCount;}
-
     // Reference to the application clipboard handler. May be null.
     protected static SOClipboardHandler mClipboardHandler;
 
@@ -138,30 +130,6 @@ public abstract class ArDkLib
     }
 
     /**
-     * called once when the library is created.
-     */
-    protected static void setupClipboard(Context context)
-    {
-        //  get a clipboard manager
-        myClipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-
-        //  create a clipboard change listener
-        mPrimaryChangeListener = new ClipboardManager.OnPrimaryClipChangedListener() {
-            @Override
-            public void onPrimaryClipChanged() {
-
-                //  the system clipboard has been changed.
-                //  if it has text, update the count.
-                if(clipboardHasText())
-                    externalCount++;
-            }
-        };
-
-        //  register the listener
-        myClipboard.addPrimaryClipChangedListener(mPrimaryChangeListener);
-    }
-
-    /**
      * copy text to the system clipboard
      */
     public static void putTextToClipboard(String text)
@@ -170,10 +138,15 @@ public abstract class ArDkLib
         {
             if (mClipboardHandler == null)
             {
-                // Use the system clipboard.
-                ClipData myClip;
-                myClip = ClipData.newPlainText("text", text);
-                myClipboard.setPrimaryClip(myClip);
+                /*
+                 * All apps are required to provide an SOPersistentStorage
+                 * implementation.
+                 */
+                Log.d(mDebugTag,
+                      "No implementation of the SOClipboardHandler " +
+                      "interface found");
+
+                throw new RuntimeException();
             }
             else
             {
@@ -190,8 +163,15 @@ public abstract class ArDkLib
     {
         if (mClipboardHandler == null)
         {
-            // Use the system clipboard.
-            return myClipboard.hasPrimaryClip();
+            /*
+             * All apps are required to provide an SOPersistentStorage
+             * implementation.
+             */
+            Log.d(mDebugTag,
+                  "No implementation of the SOClipboardHandler " +
+                  "interface found");
+
+            throw new RuntimeException();
         }
         else
         {
@@ -205,25 +185,23 @@ public abstract class ArDkLib
      */
     public static String getClipboardText(Context context)
     {
-        String text = "";
-
         if (mClipboardHandler == null)
         {
-            // Use the system clipboard.
-            if (myClipboard.hasPrimaryClip())
-            {
-                ClipData clip = myClipboard.getPrimaryClip();
-                ClipData.Item item = clip.getItemAt(0);
-                text = item.coerceToText(context).toString();
-            }
+            /*
+             * All apps are required to provide an SOPersistentStorage
+             * implementation.
+             */
+            Log.d(mDebugTag,
+                  "No implementation of the SOClipboardHandler " +
+                  "interface found");
+
+            throw new RuntimeException();
         }
         else
         {
             // Use the clipboard handler supplied by the application.
             return mClipboardHandler.getPlainTextFromClipoard();
         }
-
-        return text;
     }
 
     public void reclaimMemory()
