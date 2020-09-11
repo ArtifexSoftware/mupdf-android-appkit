@@ -1,8 +1,6 @@
 package com.artifex.solib;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Handler;
@@ -71,62 +69,11 @@ public abstract class ArDkLib
     public static void setClipboardHandler(SOClipboardHandler handler)
     {
         mClipboardHandler = handler;
-
-        registerClipboardListener();
     }
 
     public static SOClipboardHandler getClipboardHandler()
     {
         return mClipboardHandler;
-    }
-
-    /*
-     * Register a clipboard listener with the application clipboard handler
-     * class.
-     */
-    protected static void registerClipboardListener()
-    {
-        String errorBase =
-                "setClipboardHandler() experienced unexpected exception [%s]";
-
-        try
-        {
-            if (mClipboardHandler==null)
-                throw new ClassNotFoundException();
-
-            // Register the clipboard change listener.
-            mClipboardHandler.registerListener(
-                    new SOClipboardHandler.OnClipboardChanged()
-                    {
-                        @Override
-                        public  void clipboardChanged()
-                        {
-                            //  if it has text, update the count.
-                            if(mClipboardHandler.clipboardHasPlaintext())
-                            {
-                                externalCount++;
-                            }
-                        }
-                    });
-        }
-        catch (ExceptionInInitializerError e)
-        {
-            Log.e(mDebugTag, String.format(errorBase,
-                    "ExceptionInInitializerError"));
-        }
-        catch (LinkageError e)
-        {
-            Log.e(mDebugTag, String.format(errorBase, "LinkageError"));
-        }
-        catch (SecurityException e)
-        {
-            Log.e(mDebugTag, String.format(errorBase,
-                    "SecurityException"));
-        }
-        catch (ClassNotFoundException e)
-        {
-            Log.i(mDebugTag, "ClipboardHandler implementation unavailable");
-        }
     }
 
     /**

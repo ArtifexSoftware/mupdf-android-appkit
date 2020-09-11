@@ -10,23 +10,6 @@ import android.app.Activity;
 public interface SOClipboardHandler
 {
     /**
-     * This interface defines a listener that should be called by the
-     * application when the contents of it's clipboard change.
-     */
-    public interface OnClipboardChanged
-    {
-        public void clipboardChanged();
-    }
-
-    /**
-     * This method registers the clipboard change listener.<br><br>
-     *
-     * @param onClipboardChanged The SOClipboardHandler object implementing
-     *                           the listener.
-     */
-    public void registerListener(OnClipboardChanged onClipboardChanged);
-
-    /**
      * This method passes a string, cut or copied from the document, to be
      * stored in the clipboard.
      *

@@ -14,8 +14,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.util.Log;
 
-import java.lang.IllegalStateException;
-
 import com.artifex.solib.SOClipboardHandler;
 
 public class ClipboardHandler implements SOClipboardHandler
@@ -24,75 +22,11 @@ public class ClipboardHandler implements SOClipboardHandler
     private static boolean      mEnableDebug = false;
 
     private Activity           mActivity;       // The current activity.
-    private OnClipboardChanged mChangeListener; // Client clipboard change
-                                                // listener.
     private ClipboardManager   mClipboard;      // System clipboard.
-
-    // System clipboard change listener.
-    private ClipboardManager.OnPrimaryClipChangedListener
-                                                 mPrimaryChangeListener;
-
-    //////////////////////////////////////////////////////////////////////////
-    // Utility Methods.
-    //////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Install the registered system clipboard change listener.
-     *
-     * @throws IllegalStateException
-     */
-    private void installChangeListener()
-        throws IllegalStateException
-    {
-        // Listener hasn't been registered yet.
-        if (mChangeListener == null)
-        {
-            throw new IllegalStateException();
-        }
-
-        // Create a system clipboard change listener.
-        if (mPrimaryChangeListener == null)
-        {
-            mPrimaryChangeListener =
-                    new ClipboardManager.OnPrimaryClipChangedListener() {
-                        @Override
-                        public void onPrimaryClipChanged() {
-                            // Call the SOLib registered listener.
-                            if (mChangeListener != null) {
-                                mChangeListener.clipboardChanged();
-                            }
-                        }
-                    };
-
-            // Install the system clipboard listener
-            mClipboard.addPrimaryClipChangedListener(mPrimaryChangeListener);
-        }
-    }
 
     //////////////////////////////////////////////////////////////////////////
     // Methods Required By Interface.
     //////////////////////////////////////////////////////////////////////////
-
-    /**
-     * This method registers the clipboard change listener.<br><br>
-     *
-     * @param onClipboardChanged The listener object
-     */
-    @Override
-    public void registerListener(OnClipboardChanged onClipboardChanged)
-    {
-        // Remove any previous listener.
-        if (mChangeListener != null && mClipboard != null)
-        {
-            mClipboard.removePrimaryClipChangedListener(mPrimaryChangeListener);
-        }
-
-        /*
-         * Register the new listener.It will be installed when
-         * initClipboardHandler() is called.
-         */
-        mChangeListener = onClipboardChanged;
-    }
 
     /**
      * This method passes a string, cut or copied from the document, to be
@@ -159,11 +93,8 @@ public class ClipboardHandler implements SOClipboardHandler
      * if available.<br><br>
      *
      * @param activity      The current activity.
-     *
-     * @throws IllegalStateException
      */
     public void initClipboardHandler(Activity activity)
-        throws IllegalStateException
     {
         mActivity = activity;
 
@@ -171,15 +102,5 @@ public class ClipboardHandler implements SOClipboardHandler
         mClipboard =
             (ClipboardManager)mActivity.getSystemService(
                                                      Context.CLIPBOARD_SERVICE);
-
-        try
-        {
-            // Install any registered clipboard listener.
-            installChangeListener();
-        }
-        catch (IllegalStateException e)
-        {
-            throw e;
-        }
     }
 }
