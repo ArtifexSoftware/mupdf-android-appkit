@@ -967,7 +967,7 @@ public class PDFFormTextEditor extends PDFFormEditor
                 deleteSelectedText();
                 String clip = "";
                 if (docCfgOpts.isExtClipboardInEnabled())
-                    clip = ArDkLib.getClipboardText(getContext());
+                    clip = ArDkLib.getClipboardText();
                 int selStart = mEditText.getSelectionStart();
                 mEditText.getText().insert(selStart, clip);
             }

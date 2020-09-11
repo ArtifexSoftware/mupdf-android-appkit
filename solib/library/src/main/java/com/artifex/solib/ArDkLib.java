@@ -130,7 +130,7 @@ public abstract class ArDkLib
     /**
      * get text from the system clipboard
      */
-    public static String getClipboardText(Context context)
+    public static String getClipboardText()
     {
         if (mClipboardHandler == null)
         {
