@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.artifex.solib.ArDkLib;
+import com.artifex.solib.FileUtils;
 import com.artifex.solib.SODocSaveListener;
 
 import com.artifex.sonui.editor.DocumentListener;

@@ -1,6 +1,5 @@
 package com.artifex.sonui.editor;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -9,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
-import com.artifex.solib.ArDkLib;
 import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.FileUtils;
 
@@ -74,12 +72,9 @@ public class NUIView extends FrameLayout
         if (mDocView == null && ext.equals("pdf"))
             mDocView = new NUIDocViewPdf(getContext());
 
-        //  ask our parent NUIActivity;
-        if (mDocView == null) {
-            NUIActivity activity = (NUIActivity) getContext();
-            if (activity != null)
-                mDocView = activity.makeNUIView(path);
-        }
+        //  ask our factory
+        if (mDocView == null)
+            mDocView = NUIViewFactory.makeNUIView(path, getContext());
 
         //  fall back to "other"
         if (mDocView == null)

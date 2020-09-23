@@ -273,7 +273,7 @@ public class MuPDFDoc extends ArDkDoc
                 else
                     {
                     //  do the save.
-                    SOSecureFS mSecureFs = SODKLib.getSecureFS();
+                    SOSecureFS mSecureFs = ArDkLib.getSecureFS();
                     if (mSecureFs != null && mSecureFs.isSecurePath(path)) {
                         saveResult = saveSecure(pdfDoc, tmp, opts, mSecureFs);
                     }

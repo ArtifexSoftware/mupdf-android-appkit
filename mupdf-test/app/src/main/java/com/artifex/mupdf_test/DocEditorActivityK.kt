@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.artifex.solib.ArDkLib;
+import com.artifex.solib.FileUtils
 import com.artifex.solib.SODocSaveListener
 import com.artifex.sonui.editor.DocumentListener
 import com.artifex.sonui.editor.DocumentView
@@ -53,7 +54,7 @@ class DocEditorActivityK : AppCompatActivity() {
         val documentView = mDocumentView
 
         documentView?.let { dv -> 
-            dv.setDocConfigOptions(SODKLib.getAppConfigOptions())
+            dv.setDocConfigOptions(ArDkLib.getAppConfigOptions())
 
             //  set an optional listener for document events
             dv.setDocumentListener(object : DocumentListener {
@@ -92,7 +93,7 @@ class DocEditorActivityK : AppCompatActivity() {
         val documentView = mDocumentView
 
         documentView?.let { dv -> 
-            dv.setDocConfigOptions(SODKLib.getAppConfigOptions())
+            dv.setDocConfigOptions(ArDkLib.getAppConfigOptions())
 
             //  set a listener for document events
             dv.setDocumentListener(object : DocumentListener {

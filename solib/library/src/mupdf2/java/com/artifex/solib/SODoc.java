@@ -200,9 +200,10 @@ public class SODoc extends ArDkDoc {
     //  Reflow mode
     public static final int FLOW_MODE_NORMAL = 1;
     public static final int FLOW_MODE_REFLOW = 2;
+    public static final int FLOW_MODE_RESIZE = 3;
     private int mFlowMode = FLOW_MODE_NORMAL;
     public int getFlowMode() {return mFlowMode;}
-    public void setFlowMode(int mode, float width) {
+    public void setFlowMode(int mode, float width, float height) {
         mFlowMode = mode;  //  keep track of the mode
     }
 
@@ -285,5 +286,7 @@ public class SODoc extends ArDkDoc {
     public void setSelectionAlignment(int alignment) {}
 
     public String getSelectionFontName() {return null;}
+
+    public String getSelectionAsText() {return null;}
 
 }

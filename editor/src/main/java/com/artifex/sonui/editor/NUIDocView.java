@@ -3349,26 +3349,29 @@ public class NUIDocView
         //  set up a listener for when the change in flow mode is done
         createFlowModeChangeListener();
 
-        if (getDoc().getFlowMode()==SODoc.FLOW_MODE_NORMAL) {
+        SODoc doc = (SODoc)getDoc();
+
+        if (doc.getFlowMode()==SODoc.FLOW_MODE_NORMAL) {
             if (usePagesView())
                 mDocPageListView.setReflowMode(true);
             mDocView.setReflowMode(true);
-            getDoc().setFlowMode(SODoc.FLOW_MODE_REFLOW, getDocView().getReflowWidth(), getDocView().getReflowHeight());
+            doc.setFlowMode(SODoc.FLOW_MODE_REFLOW, getDocView().getReflowWidth(), getDocView().getReflowHeight());
             mDocView.mLastReflowWidth = getDocView().getReflowWidth();
         }
         else {
             mDocView.setReflowMode(false);
             if (usePagesView())
                 mDocPageListView.setReflowMode(false);
-            getDoc().setFlowMode(SODoc.FLOW_MODE_NORMAL, getDocView().getReflowWidth(), 0);
+            doc.setFlowMode(SODoc.FLOW_MODE_NORMAL, getDocView().getReflowWidth(), 0);
         }
     }
 
     //  for no-UI API
     public void setFlowMode(int mode)
     {
+        SODoc doc = (SODoc)getDoc();
         //  do nothing if the mode is the same
-        if (mode == getDoc().getFlowMode())
+        if (mode == doc.getFlowMode())
             return;
 
         //  set up a listener for when the change in flow mode is done
@@ -3379,7 +3382,7 @@ public class NUIDocView
             mDocView.setReflowMode(false);
             if (usePagesView())
                 mDocPageListView.setReflowMode(false);
-            getDoc().setFlowMode(SODoc.FLOW_MODE_NORMAL, getDocView().getReflowWidth(), 0);
+            doc.setFlowMode(SODoc.FLOW_MODE_NORMAL, getDocView().getReflowWidth(), 0);
         }
 
         if (mode==SODoc.FLOW_MODE_REFLOW)
@@ -3387,7 +3390,7 @@ public class NUIDocView
             if (usePagesView())
                 mDocPageListView.setReflowMode(true);
             mDocView.setReflowMode(true);
-            getDoc().setFlowMode(SODoc.FLOW_MODE_REFLOW, getDocView().getReflowWidth(), getDocView().getReflowHeight());
+            doc.setFlowMode(SODoc.FLOW_MODE_REFLOW, getDocView().getReflowWidth(), getDocView().getReflowHeight());
             mDocView.mLastReflowWidth = getDocView().getReflowWidth();
         }
 
@@ -3396,7 +3399,7 @@ public class NUIDocView
             if (usePagesView())
                 mDocPageListView.setReflowMode(true);
             mDocView.setReflowMode(true);
-            getDoc().setFlowMode(SODoc.FLOW_MODE_RESIZE, getDocView().getReflowWidth(), getDocView().getReflowHeight());
+            doc.setFlowMode(SODoc.FLOW_MODE_RESIZE, getDocView().getReflowWidth(), getDocView().getReflowHeight());
             mDocView.mLastReflowWidth = getDocView().getReflowWidth();
         }
     }
@@ -3404,7 +3407,7 @@ public class NUIDocView
     //  for no-UI API
     public int getFlowMode()
     {
-        return getDoc().getFlowMode();
+        return ((SODoc)getDoc()).getFlowMode();
     }
 
     public void onInsertImageButton(final View v)
@@ -5558,13 +5561,13 @@ public class NUIDocView
 
     //  for no-UI API
     public void setSelectionText(String text) {
-        getDoc().setSelectionText(text);
+        ((SODoc)getDoc()).setSelectionText(text);
     }
 
     //  for no-UI API
     public String getSelectedText()
     {
-        return getDoc().getSelectionAsText();
+        return ((SODoc)getDoc()).getSelectionAsText();
     }
 
     //  for no-UI API, see NUIDocViewPDF
@@ -5926,9 +5929,13 @@ public class NUIDocView
     {
         if (! mDocCfgOptions.isEditingEnabled())
             return false;
-        int currentEdit = mSession.getDoc().getCurrentEdit();
-        if (currentEdit > 0)
-            return true;
+        if (mSession.getDoc() instanceof SODoc)
+        {
+            int currentEdit = ((SODoc)mSession.getDoc()).getCurrentEdit();
+            if (currentEdit > 0)
+                return true;
+        }
+
         return false;
     }
 
@@ -5937,10 +5944,14 @@ public class NUIDocView
     {
         if (! mDocCfgOptions.isEditingEnabled())
             return false;
-        int currentEdit = mSession.getDoc().getCurrentEdit();
-        int numEdits = mSession.getDoc().getNumEdits();
-        if (currentEdit < numEdits)
-            return true;
+        if (mSession.getDoc() instanceof SODoc)
+        {
+            int currentEdit = ((SODoc)mSession.getDoc()).getCurrentEdit();
+            int numEdits = ((SODoc)mSession.getDoc()).getNumEdits();
+            if (currentEdit < numEdits)
+                return true;
+        }
+
         return false;
     }
 

@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 import com.artifex.solib.ArDkBitmap;
+import com.artifex.solib.ArDkPage;
 import com.artifex.solib.ArDkSelectionLimits;
 import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.ArDkDoc;
@@ -1239,7 +1240,7 @@ public class DocView
                 pct = ((float)getContext().getResources().getInteger(R.integer.sodk_editor_page_width_percentage))/100;
             final float newWidth = pct * mReflowWidth / mScale;
             final float newHeight = getReflowHeight();
-            int currentMode = doc.getFlowMode();
+            int currentMode = ((SODoc)doc).getFlowMode();
             ((SODoc)doc).setFlowMode(currentMode, newWidth, newHeight);
 
             final ViewTreeObserver observer = getViewTreeObserver();
@@ -3590,7 +3591,7 @@ public class DocView
         {
             //  one point provided. Place the cursor
             Point pPage = dpv.screenToPage(p1.x, p1.y);
-            err = dpv.getPage().select(SOPage.SOSelectMode_Caret, pPage.x, pPage.y);
+            err = dpv.getPage().select(ArDkPage.SOSelectMode_Caret, pPage.x, pPage.y);
             if (err!=1)
                 return false;
         }
@@ -3601,17 +3602,17 @@ public class DocView
             Point p2Page = dpv.screenToPage(p2.x, p2.y);
 
             //  first create a selection
-            err = dpv.getPage().select(SOPage.SOSelectMode_DefaultUnit, p1Page.x, p1Page.y);
+            err = dpv.getPage().select(ArDkPage.SOSelectMode_DefaultUnit, p1Page.x, p1Page.y);
             if (err!=1)
                 return false;
 
             //  move the end of the selection
-            err = dpv.getPage().select(SOPage.SOSelectMode_End, p2Page.x, p2Page.y);
+            err = dpv.getPage().select(ArDkPage.SOSelectMode_End, p2Page.x, p2Page.y);
             if (err!=1)
                 return false;
 
             //  move the start of the selection
-            err = dpv.getPage().select(SOPage.SOSelectMode_Start, p1Page.x, p1Page.y);
+            err = dpv.getPage().select(ArDkPage.SOSelectMode_Start, p1Page.x, p1Page.y);
             if (err!=1)
                 return false;
         }

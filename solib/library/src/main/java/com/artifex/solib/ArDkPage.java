@@ -58,7 +58,7 @@ public class ArDkPage {
                 true, inverted);
     }
 
-    public void select(int mode, double atX, double atY) {};
+    public int select(int mode, double atX, double atY) {return 0;};
     public ArDkSelectionLimits selectionLimits() {return null;};
     public void releasePage() {};
     public void destroyPage() {};

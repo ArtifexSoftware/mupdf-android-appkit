@@ -617,10 +617,4 @@ public class NUIActivity extends BaseActivity
         if (mNUIView!=null)
             mNUIView.setConfigurableButtons();
     }
-
-    //  override this to get a crack at creating a NUIDocView based on the path
-    public NUIDocView makeNUIView(String path)
-    {
-        return null;
-    }
 }
