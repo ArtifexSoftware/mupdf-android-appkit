@@ -771,6 +771,12 @@ public class NUIDocView
         mSearchClear.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Ignore button presses while we are finishing up.
+                if (mFinished)
+                {
+                    return;
+                }
+
                 mSearchText.setText("");
             }
         });
@@ -860,6 +866,12 @@ public class NUIDocView
             @Override
             public void onClick(View view)
             {
+                // Ignore button presses while we are finishing up.
+                if (mFinished)
+                {
+                    return;
+                }
+
                 long now = System.currentTimeMillis();
                 if (now-mVersionLastTapTime > VERSION_TAP_INTERVAL)
                     mVersionTapCount=1;
@@ -4937,6 +4949,12 @@ public class NUIDocView
     {
         if (v == null)
             return;
+
+        // Ignore button presses while we are finishing up.
+        if (mFinished)
+        {
+            return;
+        }
 
         //  file toolbar buttons
         if (v==mSaveAsButton)

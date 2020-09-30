@@ -176,6 +176,12 @@ public class NUIDocViewOther extends NUIDocView
     @Override
     public void onClick(View v)
     {
+        // Ignore button presses while we are finishing up.
+        if (mFinished)
+        {
+            return;
+        }
+
         super.onClick(v);
     }
 

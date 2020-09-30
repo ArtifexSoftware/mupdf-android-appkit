@@ -502,6 +502,12 @@ public class NUIDocViewPdf extends NUIDocView
     @Override
     public void onClick(View v)
     {
+        // Ignore button presses while we are finishing up.
+        if (mFinished)
+        {
+            return;
+        }
+
         super.onClick(v);
 
         if (v == mToggleAnnotButton)
