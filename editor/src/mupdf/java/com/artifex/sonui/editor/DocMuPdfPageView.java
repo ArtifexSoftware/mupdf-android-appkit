@@ -186,6 +186,8 @@ public class DocMuPdfPageView extends DocPdfPageView
 
     public void onReloadFile()
     {
+        MuPDFDoc doc = ((MuPDFDoc)getDoc());
+
         //  after a reload, we refresh our page from the document
         dropPage();
         changePage(getPageNumber());
@@ -198,6 +200,8 @@ public class DocMuPdfPageView extends DocPdfPageView
             collectFormFields();
             invalidate();
         }
+
+        doc.update(getPageNumber());
     }
 
     public void collectFormFields()
@@ -553,19 +557,31 @@ public class DocMuPdfPageView extends DocPdfPageView
                     signer.doSign(new NUIPKCS7Signer.NUIPKCS7SignerListener(){
                         @Override
                         public void onSignatureReady() {
-                            boolean result = widget.sign(signer);
-
                             MuPDFDoc doc = (MuPDFDoc)getDoc();
+
                             doc.setForceReload( true );
-                            MuPDFPage pdfPage = ((MuPDFPage)mPage);
                             if (mPage != null)
                             {
-                                pdfPage.updateWidgets();
-                                doc.update( getPageNumber() );
+                                // now initiate a save as so the user saves the signed doc
+                                NUIDocView ndv = NUIDocView.currentNUIDocView();
+                                if (ndv != null)
+                                    ndv.doSaveAs( false,
+                                            new SOSaveAsComplete()
+                                            {
+                                                @Override
+                                                public boolean onFilenameSelected( String path )
+                                                {
+                                                    return widget.sign(signer);
+                                                }
+
+                                                @Override
+                                                public void onComplete(int result, String path)
+                                                {
+                                                }
+                                            }
+                                    );
                             }
 
-                            if (!result)
-                                onCancel();
                         }
 
                         @Override

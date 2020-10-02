@@ -3099,7 +3099,7 @@ public class NUIDocView
                                             else if (mIsTemplate)
                                             {
                                                 //  this is a template
-                                                doSaveAs(true);
+                                                doSaveAs(true, null);
                                             }
                                             else
                                             {
@@ -3228,7 +3228,7 @@ public class NUIDocView
         mFileState.closeFile();
     }
 
-    private void doSaveAs(final boolean goingBack)
+    public void doSaveAs(final boolean goingBack, final SOSaveAsComplete completionHandler)
     {
         // Use the custom data leakage handlers if available.
         if (mDataLeakHandlers != null)
@@ -3291,6 +3291,9 @@ public class NUIDocView
                                          * flag will be reset and 'save' allowed.
                                          */
                                         mIsTemplate = mFileState.isTemplate();
+
+                                        if (completionHandler != null)
+                                            completionHandler.onComplete( result, path );
                                     }
                                 });
 
@@ -3308,9 +3311,6 @@ public class NUIDocView
                     //  no
                 }
             });
-
-
-
         }
         else
         {
@@ -4202,7 +4202,7 @@ public class NUIDocView
         }
     }
 
-    public void doSave()
+    private void doSave()
     {
         if (mIsTemplate)
         {
@@ -4210,7 +4210,7 @@ public class NUIDocView
              * In the case where the save keyboard shortcut is executed on
              * a template file treat as a 'saveAs' request.
              */
-            doSaveAs(false);
+            doSaveAs(false, null);
             return;
         }
 
@@ -4273,7 +4273,7 @@ public class NUIDocView
     public void onSaveAsButton(final View v)
     {
         preSave();
-        doSaveAs(false);
+        doSaveAs(false, null);
     }
 
     public void onSavePDFButton(final View v)
