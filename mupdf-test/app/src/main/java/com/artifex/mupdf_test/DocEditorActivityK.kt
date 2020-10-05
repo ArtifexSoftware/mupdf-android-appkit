@@ -99,12 +99,12 @@ class DocEditorActivityK : AppCompatActivity() {
             dv.setDocumentListener(object : DocumentListener {
                 override fun onPageLoaded(pagesLoaded: Int) {
                     // Work on a constant copy of mDocumentView
-                    val documentView = mDocumentView
+                    val documentViewCopy = mDocumentView
 
-                    if (mOriginalScale == -1f)
-                        mOriginalScale = documentView?.getScaleFactor()!!
+                    documentViewCopy?.let { dv1 ->
+                        if (mOriginalScale == -1f)
+                            mOriginalScale = dv1.getScaleFactor()
 
-                    documentView?.let { dv1 ->
                         Log.d("DocumentListener",
                               "onPageLoaded pages= " + dv1.getPageCount())
                         updateUI()
@@ -113,9 +113,9 @@ class DocEditorActivityK : AppCompatActivity() {
 
                 override fun onDocCompleted() {
                     // Work on a constant copy of mDocumentView
-                    val documentView = mDocumentView
+                    val documentViewsCopy = mDocumentView
 
-                    documentView?.let { dv1 ->
+                    documentViewsCopy?.let { dv1 ->
                         Log.d("DocumentListener",
                               "onDocCompleted pages= " + dv1.getPageCount())
                         updateUI()
@@ -151,9 +151,9 @@ class DocEditorActivityK : AppCompatActivity() {
 
     public override fun onPause() {
         // Work on a constant copy of mDocumentView
-        val documentView = mDocumentView
+        val documentViewCopy = mDocumentView
 
-        documentView?.let { dv -> 
+        documentViewCopy?.let { _ -> 
             //  called when pausing is complete
         }
         super.onPause()
@@ -258,7 +258,7 @@ class DocEditorActivityK : AppCompatActivity() {
             builder.setTitle("Line Color")
             val colorNames = arrayOf("red", "green", "blue")
             val colors = intArrayOf(-0x10000, -0xff0100, -0xffff01)
-            builder.setItems(colorNames) { dialog, which ->
+            builder.setItems(colorNames) { /*dialog*/ _, which ->
                 // Work on a constant copy of mDocumentView
                 val documentView = mDocumentView
 
@@ -278,7 +278,7 @@ class DocEditorActivityK : AppCompatActivity() {
             builder.setTitle("Line Thickness")
             val sizeNames = arrayOf("small", "medium", "large")
             val sizes = floatArrayOf(1f, 8f, 24f)
-            builder.setItems(sizeNames) { dialog, which ->
+            builder.setItems(sizeNames) { /*dialog*/ _, which ->
                 // Work on a constant copy of mDocumentView
                 val documentView = mDocumentView
 
@@ -332,9 +332,9 @@ class DocEditorActivityK : AppCompatActivity() {
         searchNextButton.text = "Find ->"
         searchNextButton.setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 val text = editText.text.toString()
                 dv.searchForward(text)
             }
@@ -344,9 +344,9 @@ class DocEditorActivityK : AppCompatActivity() {
         searchPrevButton.text = "<- Find"
         searchPrevButton.setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 val text = editText.text.toString()
                 dv.searchBackward(text)
             }
@@ -354,9 +354,9 @@ class DocEditorActivityK : AppCompatActivity() {
 
         findViewById<View>(R.id.save).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.save()
                 updateUI()
             }
@@ -364,54 +364,60 @@ class DocEditorActivityK : AppCompatActivity() {
 
         findViewById<View>(R.id.save_as).setOnClickListener(View.OnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv ->
+            documentViewCopy?.let { dv -> 
                 //  get a new path.  The customer would provide a way to specify a new
-                mUri?.let { uri ->
+                mUri?.path?.let { uriPath ->
                     //  name and location.
-                    val path = uri.path
-                    val f = File(uri.path)
-                    val newPath = f.parentFile.path + "/testFile.pdf"
+                    val f = File(uriPath)
+                    
+                    f.parentFile?.path?.let { pPath ->
+                        val newPath = pPath + "/testFile.pdf"
 
-                    //  check for collision, the SDK does not.
-                    if (FileUtils.fileExists(newPath)) {
-                        showMessage("The file $newPath already exists")
-                    } else {
-                        //  save it
-                        dv.saveTo(newPath) { result, err ->
-                            if (result == SODocSaveListener.SODocSave_Succeeded) {
-                                //  success
-                                showMessage("The file was saved.")
-                            } else {
-                                //  error
-                                showMessage("There was an error saving the file.")
+                        //  check for collision, the SDK does not.
+                        if (FileUtils.fileExists(newPath)) {
+                            showMessage("The file $newPath already exists")
+                        } else {
+                            //  save it
+                            dv.saveTo(newPath) { result, /*err*/ _ ->
+                                if (result == SODocSaveListener.SODocSave_Succeeded) {
+                                    //  success
+                                    showMessage("The file was saved.")
+                                } else {
+                                    //  error
+                                    showMessage("There was an error saving the file.")
+                                }
+                                updateUI()
                             }
-                            updateUI()
                         }
+                    } ?: run {
+                        showMessage("'" + uriPath +"' has no parent")
                     }
+                } ?: run {
+                    showMessage("URI path is null")
                 }
             }
         })
 
         findViewById<View>(R.id.print).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.print()
             }
         }
 
         findViewById<View>(R.id.share).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
-                mUri?.let { uri ->
+            documentViewCopy?.let { dv -> 
+                mUri?.path?.let { uriPath ->
                     //  save a copy of the document
-                    val file = File(filesDir.toString() + File.separator + File(uri.path).name)
-                    dv.saveTo(file.path) { result, err ->
+                    val file = File(filesDir.toString() + File.separator + File(uriPath).name)
+                    dv.saveTo(file.path) { /*result*/ _, /*err*/ _ ->
                         //  share it
                         showMessage("Sharing is application-specific, and should be implemented by the developer.\n\nSee DocEditorActivity.setupUI")
                         file.delete()
@@ -421,12 +427,10 @@ class DocEditorActivityK : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.toggle_note).setOnClickListener {
-            if (mDocumentView != null) {
-            }
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 val noteMode = dv.isNoteModeOn
                 if (noteMode) {
                     dv.setNoteModeOff()
@@ -438,27 +442,27 @@ class DocEditorActivityK : AppCompatActivity() {
 
         findViewById<View>(R.id.author).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.author()
             }
         }
 
         findViewById<View>(R.id.first_page).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.firstPage()
             }
         }
 
         findViewById<View>(R.id.last_page).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.lastPage()
             }
         }
@@ -467,9 +471,9 @@ class DocEditorActivityK : AppCompatActivity() {
         historyNextButton.text = "History ->"
         historyNextButton.setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.historyNext()
             }
         }
@@ -478,18 +482,18 @@ class DocEditorActivityK : AppCompatActivity() {
         historyPrevButton.text = "<- History"
         historyPrevButton.setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.historyPrevious()
             }
         }
 
         findViewById<View>(R.id.table_of_contents).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.tableOfContents()
             }
         }
@@ -498,36 +502,36 @@ class DocEditorActivityK : AppCompatActivity() {
 
         findViewById<View>(R.id.redact_mark).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.redactMarkText();
             }
         }
 
         findViewById<View>(R.id.redact_mark_area).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.redactMarkArea()
             }
         }
 
         findViewById<View>(R.id.redact_remove).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.redactRemove()
             }
         }
 
         findViewById<View>(R.id.redact_apply).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 dv.redactApply()
             }
         }
@@ -535,9 +539,9 @@ class DocEditorActivityK : AppCompatActivity() {
         val pageNumberText = findViewById<EditText>(R.id.page_number)
         findViewById<View>(R.id.goto_page).setOnClickListener {
             // Work on a constant copy of mDocumentView
-            val documentView = mDocumentView
+            val documentViewCopy = mDocumentView
 
-            documentView?.let { dv -> 
+            documentViewCopy?.let { dv -> 
                 try {
                     val pageNum = pageNumberText.text.toString().toInt()
                     pageNumberText.text.clear()
@@ -568,9 +572,9 @@ class DocEditorActivityK : AppCompatActivity() {
                 dialog.setTitle(title)
                 dialog.setMessage(body)
                 dialog.setCancelable(false)
-                dialog.setPositiveButton(okLabel) { dialog, which ->
-                    dialog.dismiss()
-                    whenDone?.run()
+                dialog.setPositiveButton(okLabel) { dialog1, /*which*/ _ ->
+                    dialog1.dismiss()
+                    whenDone.run()
                 }
                 dialog.create().show()
             }
@@ -580,13 +584,13 @@ class DocEditorActivityK : AppCompatActivity() {
                 dialog.setTitle(title)
                 dialog.setMessage(body)
                 dialog.setCancelable(false)
-                dialog.setPositiveButton(yesButtonLabel) { dialog, which ->
-                    dialog.dismiss()
-                    yesRunnable?.run()
+                dialog.setPositiveButton(yesButtonLabel) { dialog1, /*which*/ _ ->
+                    dialog1.dismiss()
+                    yesRunnable.run()
                 }
-                dialog.setNegativeButton(noButtonLabel) { dialog, which ->
-                    dialog.dismiss()
-                    noRunnable?.run()
+                dialog.setNegativeButton(noButtonLabel) { dialog1, /*which*/ _ ->
+                    dialog1.dismiss()
+                    noRunnable.run()
                 }
                 dialog.create().show()
             }
@@ -745,7 +749,7 @@ class DocEditorActivityK : AppCompatActivity() {
 
         // Set up the buttons
         dBuilder.setPositiveButton("OK"
-        ) { dialog, which ->
+        ) { /*dialog*/ _, /*which*/ _ ->
             // Work on a constant copy of mDocumentView
             val documentView = mDocumentView
 
@@ -755,7 +759,7 @@ class DocEditorActivityK : AppCompatActivity() {
             }
         }
         dBuilder.setNegativeButton("Cancel"
-        ) { dialog, which ->
+        ) { dialog, /*which*/ _ ->
             // Cancel the operation.
             dialog.cancel()
             mActivity.finish()
@@ -792,13 +796,13 @@ class DocEditorActivityK : AppCompatActivity() {
             val context: Context = this@DocEditorActivityK
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Table Of Contents")
-            builder.setItems(labels) { dialog, which ->
+            builder.setItems(labels) { /*dialog*/ _, which ->
                 val entry = entries[which]
                 if (entry.page >= 0) {
                     // Work on a constant copy of mDocumentView
-                    val documentView = mDocumentView
+                    val documentViewCopy = mDocumentView
 
-                    documentView?.let { dv -> 
+                    documentViewCopy?.let { dv -> 
                         val box = RectF(entry.x, entry.y, entry.x + 1, entry.y + 1)
                         dv.gotoInternalLocation(entry.page, box)
                     }
@@ -817,7 +821,7 @@ class DocEditorActivityK : AppCompatActivity() {
     private fun showMessage(message: String) {
         val dialog = AlertDialog.Builder(this)
         dialog.setMessage(message)
-                .setPositiveButton("Ok") { dialoginterface, i -> }.show()
+                .setPositiveButton("Ok") { /*dialog*/ _, /*which*/  _-> }.show()
     }
 }
 
