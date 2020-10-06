@@ -335,7 +335,7 @@ public class MuPDFDoc extends ArDkDoc
                 public int read(byte[] b) throws IOException
                 {
                     int numBytes = secureFS.readFromFile(handle, b);
-                    return numBytes;
+                    return (numBytes == 0) ? -1 : numBytes;
                 }
 
                 public void write(byte[] b, int off, int len) throws IOException
@@ -1347,7 +1347,7 @@ public class MuPDFDoc extends ArDkDoc
                 public int read(byte[] b) throws IOException
                 {
                     int numBytes = secureFS.readFromFile(handle, b);
-                    return numBytes;
+                    return (numBytes == 0) ? -1 : numBytes;
                 }
 
                 public long seek(long offset, int whence) throws IOException
