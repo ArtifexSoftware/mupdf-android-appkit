@@ -19,6 +19,15 @@ public interface SOSaveAsComplete
       */
     int SOSaveAsComplete_Cancelled = 2;
 
+
+    /**
+     * Called on completion of the filename selection process.
+     *
+     * @param path     desired path for saved file
+     * @return true to continue, false to abort save
+     */
+    boolean onFilenameSelected(String path);
+
     /**
      * Called on completion of the saveAs process.
      *

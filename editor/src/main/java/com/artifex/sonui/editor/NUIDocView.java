@@ -3116,6 +3116,12 @@ public class NUIDocView
                                                                 mDataLeakHandlers.postSaveHandler(new SOSaveAsComplete()
                                                                 {
                                                                     @Override
+                                                                    public boolean onFilenameSelected( String path )
+                                                                    {
+                                                                        return true;
+                                                                    }
+
+                                                                    @Override
                                                                     public void onComplete(int result, String path)
                                                                     {
                                                                         //  if the postSaveHandler did not succeed (result!=0)
@@ -3243,6 +3249,14 @@ public class NUIDocView
                                 mSession.getDoc(),
                                 new SOSaveAsComplete()
                                 {
+                                    @Override
+                                    public boolean onFilenameSelected( String path )
+                                    {
+                                        if (completionHandler != null)
+                                            return completionHandler.onFilenameSelected( path );
+                                        return true;
+                                    }
+
                                     @Override
                                     public void onComplete(int result, String path)
                                     {
@@ -4219,6 +4233,12 @@ public class NUIDocView
                                 mDataLeakHandlers.postSaveHandler(
                                         new SOSaveAsComplete()
                                         {
+                                            @Override
+                                            public boolean onFilenameSelected( String path )
+                                            {
+                                                return true;
+                                            }
+
                                             @Override
                                             public void onComplete(int result, String path)
                                             {
@@ -5681,7 +5701,7 @@ public class NUIDocView
     //  for no-UI API
     public void saveAs()
     {
-        doSaveAs(false);
+        doSaveAs(false, null);
     }
 
     //  for no-UI API
