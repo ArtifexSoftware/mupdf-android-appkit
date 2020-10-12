@@ -3639,7 +3639,7 @@ public class DocView
     }
 
     //  for no-UI API
-    public void setScaleAndScroll (float newScale, int newX, int newY)
+    public void setScaleAndScroll (float newScale, final int newX, final int newY)
     {
         //  set the new scale value
         mScale = newScale;
@@ -3647,11 +3647,37 @@ public class DocView
         //  scale children
         scaleChildren();
 
-        //  set scroll values
-        setScrollX(newX);
-        setScrollY(newY);
-
         //  layout
         requestLayout();
+
+        if (mReflowMode)
+        {
+            //  handle possible appearance of new pages
+            NUIDocView.currentNUIDocView().onReflowScale();
+
+            //  change the flow mode width and height
+            float pct = 1.0f;
+            if (NUIDocView.currentNUIDocView().isPageListVisible())
+                pct = ((float)getContext().getResources().getInteger(R.integer.sodk_editor_page_width_percentage))/100;
+            final float newWidth = pct * mReflowWidth / mScale;
+            final float newHeight = getReflowHeight();
+            int currentMode = ((SODoc)getDoc()).getFlowMode();
+            ((SODoc)getDoc()).setFlowMode(currentMode, newWidth, newHeight);
+        }
+
+        final ViewTreeObserver observer = getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                observer.removeOnGlobalLayoutListener(this);
+
+                //  set scroll values
+                setScrollX(newX);
+                setScrollY(newY);
+
+                //  report the new page
+                mHostActivity.setCurrentPage(mostVisibleChild);
+            }
+        });
     }
 }
