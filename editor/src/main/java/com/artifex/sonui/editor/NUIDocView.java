@@ -4942,8 +4942,15 @@ public class NUIDocView
     public void goToPage(int page, boolean fast)
     {
         mDocView.scrollToPage(page, fast);
-        if (usePagesView())
+        if (usePagesView()) {
+            //  ask the page list to highlight this as the current page
+            mDocPageListView.setCurrentPage(page);
             mDocPageListView.scrollToPage(page, fast);
+        }
+
+        //  update the current page
+        mCurrentPageNum = page;
+        setCurrentPage(page);
     }
 
     public void onFirstPageButton(View v)

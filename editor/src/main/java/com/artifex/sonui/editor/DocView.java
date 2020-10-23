@@ -3665,15 +3665,15 @@ public class DocView
             ((SODoc)getDoc()).setFlowMode(currentMode, newWidth, newHeight);
         }
 
+        //  set scroll values
+        setScrollX(newX);
+        setScrollY(newY);
+
         final ViewTreeObserver observer = getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 observer.removeOnGlobalLayoutListener(this);
-
-                //  set scroll values
-                setScrollX(newX);
-                setScrollY(newY);
 
                 //  report the new page
                 mHostActivity.setCurrentPage(mostVisibleChild);
