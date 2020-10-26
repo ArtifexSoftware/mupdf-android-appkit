@@ -336,8 +336,11 @@ public class PDFFormTextEditor extends PDFFormEditor
                 break;
 
             case MuPDFWidget.CONTENT_DATE:
+                inputType = InputType.TYPE_DATETIME_VARIATION_DATE;
+                break;
+
             case MuPDFWidget.CONTENT_TIME:
-                inputType = InputType.TYPE_CLASS_DATETIME;
+                inputType = InputType.TYPE_DATETIME_VARIATION_TIME;
                 break;
         }
         inputType |= InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
@@ -420,6 +423,8 @@ public class PDFFormTextEditor extends PDFFormEditor
             //  no word selected, so treat like a single-tap
             singleTap(x, y);
         }
+        Utilities.showKeyboard(getContext());
+
     }
 
     private int selectionFromTap(float x, float y)
@@ -469,6 +474,7 @@ public class PDFFormTextEditor extends PDFFormEditor
             showMenu();
             invalidate();
         }
+        Utilities.showKeyboard(getContext());
     }
 
     //  when we change the form field text, we set this to true.
@@ -743,6 +749,7 @@ public class PDFFormTextEditor extends PDFFormEditor
                         public void run() {
                             //  we can display another message now.
                             messageDisplayed = false;
+                            Utilities.showKeyboard(getContext());
                         }
                     });
                 }
