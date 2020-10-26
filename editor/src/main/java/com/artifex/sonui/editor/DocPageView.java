@@ -932,6 +932,11 @@ public class DocPageView extends View implements SOPageListener
         return mZoom * mScale;
     }
 
+    public double getZoom()
+    {
+        return mZoom;
+    }
+
     protected void pageToView(PointF pageP, PointF viewP)
     {
         double factor = getFactor();
