@@ -390,6 +390,39 @@ public class MuPDFPage extends ArDkPage
         annot.update();
     }
 
+    void createSignatureAt(final PointF point)
+    {
+        final PDFPage pdfPage = getPDFPage(mPage);
+        if (pdfPage==null)
+            return;
+
+        //  this is where the user tapped
+        float x = point.x;
+        float y = point.y;
+
+        PDFWidget widget = pdfPage.createSignature();
+        if (widget!=null)
+        {
+            //  get the rect
+            Rect r = widget.getRect();
+
+            //  shift to the tapped location
+            float dx = x - r.x0;
+            float dy = y - r.y0;
+            r.x0 += dx;
+            r.x1 += dx;
+            r.y0 += dy;
+            r.y1 += dy;
+
+            //  set the new rect
+            widget.setRect(r);
+            widget.update();
+
+            //  mark the doc as modified
+            mDoc.setModified(true);
+        }
+    }
+
     void createInkAnnotation(SOPoint[] points, float width, int color)
     {
         PDFPage pdfPage = getPDFPage(mPage);
@@ -717,6 +750,19 @@ public class MuPDFPage extends ArDkPage
         PDFPage pdfPage = getPDFPage(mPage);
         if (pdfPage!=null) {
             pdfPage.deleteAnnotation(annot);
+        }
+    }
+
+    public void deleteWidget(MuPDFWidget widget)
+    {
+        PDFPage pdfPage = getPDFPage(mPage);
+        if (pdfPage!=null) {
+
+            PDFAnnotation annot = widget.asAnnotation();
+            pdfPage.deleteAnnotation(annot);
+
+            //  mark the doc as modified
+            mDoc.setModified(true);
         }
     }
 

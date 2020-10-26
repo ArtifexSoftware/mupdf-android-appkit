@@ -122,6 +122,7 @@
     <string name="sodk_editor_not_supported">Not supported</string>
     <string name="sodk_editor_not_yet_supported">not yet supported</string>
     <string name="sodk_editor_note_upper">NOTE</string>
+    <string name="sodk_editor_digsig_upper">DIGITAL\nSIGNATURE</string>
     <string name="sodk_editor_number_format_accounting">Number Format - Accounting</string>
     <string name="sodk_editor_number_format_currency">Number Format - Currency</string>
     <string name="sodk_editor_number_format_custom">Number Format - Custom</string>
@@ -307,5 +308,10 @@
 
     <string name="sodk_editor_print">Print</string>
     <string name="sodk_editor_present">Present</string>
+
+    <string name="sodk_editor_signature">Signature</string>
+    <string name="sodk_editor_signature_message">Would you like to sign the document,\nreposition the field, or delete the field?</string>
+    <string name="sodk_editor_signature_sign">Sign</string>
+    <string name="sodk_editor_signature_reposition">Reposition</string>
 
 </resources>

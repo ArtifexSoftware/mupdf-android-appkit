@@ -99,6 +99,7 @@ public abstract class ArDkDoc
     public abstract void addHighlightAnnotation();
     public abstract void deleteHighlightAnnotation();
     public abstract void createTextAnnotationAt(PointF point, int pageNum);
+    public abstract void createSignatureAt(PointF point, int pageNum);
     public abstract String getSelectionAnnotationAuthor();
     public abstract String getSelectionAnnotationDate();
     public abstract String getSelectionAnnotationComment();

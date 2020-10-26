@@ -2,6 +2,7 @@ package com.artifex.solib;
 
 import android.graphics.Rect;
 
+import com.artifex.mupdf.fitz.PDFAnnotation;
 import com.artifex.mupdf.fitz.PKCS7Signer;
 import com.artifex.mupdf.fitz.PKCS7Verifier;
 import com.artifex.mupdf.fitz.Quad;
@@ -85,6 +86,12 @@ public class MuPDFWidget
             return r2;
         }
         return null;
+    }
+
+    public void setBounds(Rect r)
+    {
+        mWidget.setRect(new com.artifex.mupdf.fitz.Rect(r.left, r.top, r.right, r.bottom));
+        mWidget.update();
     }
 
     public String[] getOptions()
@@ -200,6 +207,11 @@ public class MuPDFWidget
     public long getTimeSigned()
     {
         return mTimeSigned;
+    }
+
+    PDFAnnotation asAnnotation()
+    {
+        return (PDFAnnotation)mWidget;
     }
 
 }

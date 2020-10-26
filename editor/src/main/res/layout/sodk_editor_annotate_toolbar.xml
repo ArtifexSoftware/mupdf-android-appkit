@@ -75,6 +75,24 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/signature_holder"
+                android:background="@color/sodk_editor_button_normal"
+                >
+                <View style="@style/sodk_editor_toolbar_divider" />
+                <com.artifex.sonui.editor.ToolbarButton
+                    style="@style/sodk_editor_toolbar_button"
+                    android:background="@drawable/sodk_editor_toolbar_button2"
+                    android:id="@+id/signature_button"
+                    android:drawableTop="@drawable/sodk_editor_icon_digsig"
+                    android:text="@string/sodk_editor_digsig_upper" />
+                <View style="@style/sodk_editor_toolbar_divider" />
+
+            </LinearLayout>
+
             <com.artifex.sonui.editor.ToolbarButton
                 style="@style/sodk_editor_toolbar_button"
                 android:id="@+id/author_button"

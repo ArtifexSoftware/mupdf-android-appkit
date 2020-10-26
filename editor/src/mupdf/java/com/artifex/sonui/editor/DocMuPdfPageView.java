@@ -8,7 +8,12 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
+
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.util.Log;
 import android.view.View;
@@ -223,6 +228,18 @@ public class DocMuPdfPageView extends DocPdfPageView
                 i++;
             }
         }
+    }
+
+    public MuPDFWidget getNewestWidget()
+    {
+        if (mFormFields==null)
+            return null;
+        if (mFormFields.length==0)
+            return null;
+
+        //  we assume that the newest widget is
+        //  last on the list.
+        return mFormFields[mFormFields.length-1];
     }
 
     private MuPDFWidget findTappedWidget(int x, int y)
@@ -551,44 +568,54 @@ public class DocMuPdfPageView extends DocPdfPageView
         if (tapped && getDocView().getDocConfigOptions().isFormSigningFeatureEnabled())
         {
             if (!widget.isSigned()) {
-                // create a signer
-                final NUIPKCS7Signer signer = Utilities.getSigner((Activity)getContext());
-                if (signer != null)
-                    signer.doSign(new NUIPKCS7Signer.NUIPKCS7SignerListener(){
-                        @Override
-                        public void onSignatureReady() {
-                            MuPDFDoc doc = (MuPDFDoc)getDoc();
 
-                            doc.setForceReload( true );
-                            if (mPage != null)
-                            {
-                                // now initiate a save as so the user saves the signed doc
-                                NUIDocView ndv = NUIDocView.currentNUIDocView();
-                                if (ndv != null)
-                                    ndv.doSaveAs( false,
-                                            new SOSaveAsComplete()
-                                            {
-                                                @Override
-                                                public boolean onFilenameSelected( String path )
-                                                {
-                                                    return widget.sign(signer);
-                                                }
+                //  the widget's not yet been signed, so
 
-                                                @Override
-                                                public void onComplete(int result, String path)
-                                                {
-                                                }
-                                            }
-                                    );
-                            }
+                final DocPdfPageView pageView = this;
 
-                        }
+                ContextThemeWrapper ctw = new ContextThemeWrapper(getContext(), R.style.sodk_editor_alert_dialog_style);
+                final AlertDialog alert = new AlertDialog.Builder(ctw).create();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View view = inflater.inflate(R.layout.sodk_editor_signature_dialog, null);
+                alert.setView(view);
 
-                        @Override
-                        public void onCancel() {
+                view.findViewById(R.id.sign_button).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        doSign(widget);
+                    }
+                });
 
-                        }
-                    });
+                view.findViewById(R.id.reposition_button).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        DocPdfView dpv = (DocPdfView)getDocView();
+                        dpv.doReposition(pageView, widget);
+                    }
+                });
+
+                view.findViewById(R.id.delete_button).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        DocPdfView dpv = (DocPdfView)getDocView();
+                        dpv.setDeletingPage((DocPdfPageView)DocMuPdfPageView.this);
+                        MuPDFDoc doc = (MuPDFDoc) getDoc();
+                        doc.deleteWidget(getPageNumber(), widget);
+                    }
+                });
+
+                view.findViewById(R.id.cancel_button).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                    }
+                });
+
+                alert.show();
+
             } else {
                 // create a verifier
                 final NUIPKCS7Verifier verifier = Utilities.getVerifier((Activity)getContext());
@@ -648,6 +675,53 @@ public class DocMuPdfPageView extends DocPdfPageView
 
         scrollCurrentWidgetIntoView();
         invalidate();
+    }
+
+    private void doSign(final MuPDFWidget widget)
+    {
+        // create a signer
+        final NUIPKCS7Signer signer = Utilities.getSigner((Activity)getContext());
+        if (signer != null)
+            signer.doSign(new NUIPKCS7Signer.NUIPKCS7SignerListener(){
+                @Override
+                public void onSignatureReady() {
+
+                    ((Activity)getContext()).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MuPDFDoc doc = (MuPDFDoc)getDoc();
+
+                            doc.setForceReload( true );
+                            if (mPage != null)
+                            {
+                                // now initiate a save as so the user saves the signed doc
+                                NUIDocView ndv = NUIDocView.currentNUIDocView();
+                                if (ndv != null)
+                                    ndv.doSaveAs( false,
+                                            new SOSaveAsComplete()
+                                            {
+                                                @Override
+                                                public boolean onFilenameSelected( String path )
+                                                {
+                                                    return widget.sign(signer);
+                                                }
+
+                                                @Override
+                                                public void onComplete(int result, String path)
+                                                {
+                                                }
+                                            }
+                                    );
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
     }
 
     private void editWidgetAsCheckbox(final MuPDFWidget widget, boolean tapped)

@@ -966,6 +966,19 @@ public class MuPDFDoc extends ArDkDoc
     }
 
     @Override
+    public void createSignatureAt(PointF point, final int pageNum)
+    {
+        mPages.get(pageNum).createSignatureAt(point);
+        update(pageNum);
+    }
+
+    public void deleteWidget(int pageNum, MuPDFWidget widget)
+    {
+        mPages.get(pageNum).deleteWidget(widget);
+        update(pageNum);
+    }
+
+    @Override
     public String getSelectionAnnotationAuthor()
     {
         PDFAnnotation annot = (PDFAnnotation)getSelectedAnnotation();

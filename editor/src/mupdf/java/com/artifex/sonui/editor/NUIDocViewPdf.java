@@ -26,6 +26,7 @@ public class NUIDocViewPdf extends NUIDocView
     private ToolbarButton mLineColorButton;
     private ToolbarButton mLineThicknessButton;
     private ToolbarButton mAuthorButton;
+    private ToolbarButton mSignatureButton;
 
     private ToolbarButton mRedactMarkButton;
     private ToolbarButton mRedactMarkAreaButton;
@@ -93,6 +94,7 @@ public class NUIDocViewPdf extends NUIDocView
             mLineColorButton = (ToolbarButton) createToolbarButton(R.id.line_color_button);
             mLineThicknessButton = (ToolbarButton) createToolbarButton(R.id.line_thickness_button);
             mDeleteButton = (ToolbarButton) createToolbarButton(R.id.delete_button);
+            mSignatureButton = (ToolbarButton) createToolbarButton(R.id.signature_button);
         }
 
         mRedactMarkButton = (ToolbarButton) createToolbarButton(R.id.redact_button_mark);
@@ -250,6 +252,10 @@ public class NUIDocViewPdf extends NUIDocView
             mNoteButton.setSelected(noteMode);
             findViewById(R.id.note_holder).setSelected(noteMode);
 
+            boolean signatureMode = docView.getSignatureMode();
+            mSignatureButton.setSelected(signatureMode);
+            findViewById(R.id.signature_holder).setSelected(signatureMode);
+
             boolean drawMode = docView.getDrawMode();
 
             //  always show the delete button in drawing mode (like iOS)
@@ -257,9 +263,10 @@ public class NUIDocViewPdf extends NUIDocView
             mDeleteButton.setEnabled((drawMode && hasNotSavedInk) || selCanBeDeleted);
 
             //  no notes or highlights while in draw mode
-            mNoteButton.setEnabled(!drawMode);
-            mAuthorButton.setEnabled(!drawMode);
-            mHighlightButton.setEnabled(!drawMode);
+            mNoteButton.setEnabled(!drawMode && !signatureMode);
+            mAuthorButton.setEnabled(!drawMode && !signatureMode && !noteMode);
+            mHighlightButton.setEnabled(!drawMode && !signatureMode && !noteMode);
+            mSignatureButton.setEnabled(!drawMode && !noteMode);
 
             //  set the button's color to match the current drawing color
             int color = ((DocPdfView) getDocView()).getInkLineColor();
@@ -361,6 +368,12 @@ public class NUIDocViewPdf extends NUIDocView
     public void onNoteButton(View v)
     {
         getPdfDocView().onNoteMode();
+        updateUIAppearance();
+    }
+
+    public void onSignatureButton(View v)
+    {
+        getPdfDocView().onSignatureMode();
         updateUIAppearance();
     }
 
@@ -518,6 +531,8 @@ public class NUIDocViewPdf extends NUIDocView
             onDeleteButton(v);
         if (v == mNoteButton)
             onNoteButton(v);
+        if (v == mSignatureButton)
+            onSignatureButton(v);
         if (v == mAuthorButton)
             onAuthorButton(v);
         if (v == mDrawButton)
@@ -1067,5 +1082,13 @@ public class NUIDocViewPdf extends NUIDocView
     {
         MuPDFDoc pdfDoc = (MuPDFDoc)getDoc();
         return pdfDoc.hasRedactionsToApply();
+    }
+
+    @Override
+    public void onSelectionChanged()
+    {
+        super.onSelectionChanged();
+
+        getPdfDocView().onSelectionChanged();
     }
 }

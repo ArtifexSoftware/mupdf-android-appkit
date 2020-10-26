@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 
 import com.artifex.solib.ArDkDoc;
+import com.artifex.solib.MuPDFWidget;
 import com.artifex.solib.SOPoint;
 
 import java.util.ArrayList;
@@ -207,6 +208,25 @@ public class DocPdfPageView extends DocPageView
         getDoc().createTextAnnotationAt(pPage, getPageNumber());
 
         invalidate();
+    }
+
+    public void createSignatureAt(float x, float y)
+    {
+        //  where, in page coordinates
+        PointF pScreen = new PointF(x, y);
+        PointF pPage = screenToPage(pScreen);
+
+        //  create it
+        getDoc().createSignatureAt(pPage, getPageNumber());
+    }
+
+    public void collectFormFields()
+    {
+    }
+
+    public MuPDFWidget getNewestWidget()
+    {
+        return null;
     }
 
     //-----------------------------------------------------
