@@ -789,6 +789,8 @@ public class Utilities
             return true;
         if (FileUtils.matchFileExtension(ext, ArDkUtils.SO_IMG_TYPES))
             return true;
+        if (FileUtils.matchFileExtension(ext, ArDkUtils.SO_OTHER_TYPES))
+            return true;
 
         return false;
     }

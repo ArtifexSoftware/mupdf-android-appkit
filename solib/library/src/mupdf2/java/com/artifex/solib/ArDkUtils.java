@@ -37,6 +37,7 @@ public class ArDkUtils {
     public static final String[] PPT_TYPES = new String[]{};
     public static final String[] PPTX_TYPES = new String[]{};
     public static final String[] SO_IMG_TYPES = new String[]{};
+    public static final String[] SO_OTHER_TYPES = new String[]{};
 
     public static final String[] MUPDF_TYPES = new String[]
             {"pdf", "epub", "svg", "xps", "fb2", "cbz", "xhtml"};

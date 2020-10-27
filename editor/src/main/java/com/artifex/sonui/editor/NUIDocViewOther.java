@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 
 import com.artifex.solib.FileUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class NUIDocViewOther extends NUIDocView
 {
     public NUIDocViewOther(Context context)
@@ -51,15 +54,24 @@ public class NUIDocViewOther extends NUIDocView
     @Override
     protected void createEditButtons2() {}
 
+    private boolean useFullToolbar()
+    {
+        //  certain document types will use the full "other" toolbar.
+        List<String> exts = Arrays.asList("txt", "csv", "hwp");
+
+        String ext = getFileExtension();
+        if (ext==null)
+            return false;
+
+        return exts.contains(ext.toLowerCase());
+    }
+
     @Override
     protected void afterFirstLayoutComplete()
     {
         super.afterFirstLayoutComplete();
 
-        String ext = getFileExtension();
-        if ( ext != null && (
-                (ext.compareToIgnoreCase("txt")==0)
-            ||  (ext.compareToIgnoreCase("csv")==0) ) )
+        if (useFullToolbar())
         {
             hideUnnecessaryDivider2(R.id.other_toolbar);
         }
@@ -153,12 +165,7 @@ public class NUIDocViewOther extends NUIDocView
     @Override
     public void onReflowButton(View v)
     {
-        String ext = getFileExtension();
-        if ( ext != null && (
-                (ext.compareToIgnoreCase("txt")==0)
-            ||  (ext.compareToIgnoreCase("csv")==0) ) )
-        {
-            //  reflow is only for text and csv files
+        if (useFullToolbar()) {
             super.onReflowButton(v);
         }
     }
