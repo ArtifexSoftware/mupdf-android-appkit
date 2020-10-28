@@ -36,23 +36,6 @@ public class ArDkBitmap implements Comparable<ArDkBitmap>
         this.rect   = new Rect(0, 0, w, h);
     }
 
-    /**
-     * Create an ArDkBitmap that gives access to a subarea of another ArDkBitmap (sharing the same
-     * underlying native Bitmap).
-     *
-     * @param s     ArDkBitmap that we want to represent a subrectangle of.
-     * @param x0    bound of sub rectangle.
-     * @param y0    bound of sub rectangle.
-     * @param x1    bound of sub rectangle.
-     * @param y1    bound of sub rectangle.
-     */
-    public ArDkBitmap(ArDkBitmap s, int x0, int y0, int x1, int y1)
-    {
-        this.serial = s.serial;
-        this.bitmap  = s.bitmap;
-        this.rect = new Rect(x0, y0, x1, y1);
-    }
-
     public ArDkBitmap(Bitmap bitmap)
     {
         //  create an ArDkBitmap from an Android Bitmap
@@ -149,4 +132,9 @@ public class ArDkBitmap implements Comparable<ArDkBitmap>
     protected Bitmap   bitmap;
     protected Rect     rect;
 
+    /**
+     * create a new bitmap representing a portion of this bitmap.
+     * real implementations are found in SOBitmap and MuPdfBitmap
+     */
+    public ArDkBitmap createBitmap(int x0, int y0, int x1, int y1) {return null;}
 }

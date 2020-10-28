@@ -22,8 +22,6 @@ import com.artifex.solib.ArDkDoc;
 import com.artifex.solib.ArDkLib;
 import com.artifex.solib.ArDkSelectionLimits;
 import com.artifex.solib.ConfigOptions;
-import com.artifex.solib.ArDkBitmap;
-import com.artifex.solib.SODoc;
 import com.artifex.solib.SOHyperlink;
 import com.artifex.solib.ArDkPage;
 import com.artifex.solib.SOPageListener;
@@ -519,7 +517,7 @@ public class DocPageView extends View implements SOPageListener
         //  figure the rendering rect, scale and make the ArDkBitmap
         renderRect.set(mDrawToRect);
         renderScale = mScale;
-        mBitmapRender = new ArDkBitmap(bitmap, mRenderToRect.left, mRenderToRect.top, mRenderToRect.right, mRenderToRect.bottom);
+        mBitmapRender = bitmap.createBitmap(mRenderToRect.left, mRenderToRect.top, mRenderToRect.right, mRenderToRect.bottom);
 
         if (DEBUG_PAGE_RENDERING)
         {
