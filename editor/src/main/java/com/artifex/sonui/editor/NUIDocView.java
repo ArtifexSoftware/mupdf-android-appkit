@@ -3279,18 +3279,22 @@ public class NUIDocView
 
                                             //  reload the file
                                             reloadFile();
+
+                                            /*
+                                             * If the 'saveAs' was successful the template
+                                             * flag will be reset and 'save' allowed.
+                                             */
+                                            mIsTemplate = mFileState.isTemplate();
                                         }
-                                        else
+                                        else if (result == SOSaveAsComplete_Error)
                                         {
                                             // Save failed. Revoke the user path
                                             mFileState.setUserPath(null);
                                         }
-
-                                        /*
-                                         * If the 'saveAs' was successful the template
-                                         * flag will be reset and 'save' allowed.
-                                         */
-                                        mIsTemplate = mFileState.isTemplate();
+                                        else if (result == SOSaveAsComplete_Cancelled)
+                                        {
+                                            //  cancelled
+                                        }
 
                                         if (completionHandler != null)
                                             completionHandler.onComplete( result, path );
@@ -5930,18 +5934,22 @@ public class NUIDocView
 
                             //  reload the file
                             reloadFile();
+
+                            /*
+                             * If the 'saveAs' was successful the template
+                             * flag will be reset and 'save' allowed.
+                             */
+                            mIsTemplate = mFileState.isTemplate();
                         }
-                        else
+                        else if (result == SODocSave_Error)
                         {
                             // Save failed. Revoke the user path
                             mFileState.setUserPath(null);
                         }
-
-                        /*
-                         * If the 'saveAs' was successful the template
-                         * flag will be reset and 'save' allowed.
-                         */
-                        mIsTemplate = mFileState.isTemplate();
+                        else if (result == SODocSave_Cancelled)
+                        {
+                            //  cancelled
+                        }
 
                         //  now tell our caller
                         listener.onComplete(result, err);
