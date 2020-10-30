@@ -289,4 +289,6 @@ public class SODoc extends ArDkDoc {
 
     public String getSelectionAsText() {return null;}
 
+    public void createSignatureAt(PointF point, int pageNum) {}
+
 }
