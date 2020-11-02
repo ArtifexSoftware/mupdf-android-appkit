@@ -210,4 +210,10 @@ public class SOEditText extends FrameLayout
     public Object getTag(int key) {
         return mEditText.getTag(key);
     }
+
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (mEditText!=null)
+            mEditText.setVisibility(visibility);
+    }
 }

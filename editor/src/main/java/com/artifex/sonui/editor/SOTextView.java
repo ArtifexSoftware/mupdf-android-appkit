@@ -156,4 +156,10 @@ public class SOTextView extends FrameLayout {
             mTextView.setOnClickListener(l);
         }
     }
+
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (mTextView!=null)
+            mTextView.setVisibility(visibility);
+    }
 }
