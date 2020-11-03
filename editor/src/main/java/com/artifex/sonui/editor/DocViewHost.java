@@ -13,4 +13,5 @@ public interface DocViewHost
     void layoutNow();
     void selectionupdated();
     void updateUI();
+    void reportViewChanges();
 }

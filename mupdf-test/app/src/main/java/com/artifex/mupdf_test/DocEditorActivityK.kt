@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Rect
 import android.graphics.RectF
 import android.net.Uri
 import android.os.Bundle
@@ -58,9 +59,18 @@ class DocEditorActivityK : AppCompatActivity() {
 
             //  set an optional listener for document events
             dv.setDocumentListener(object : DocumentListener {
-                override fun onPageLoaded(pagesLoaded: Int) {}
-                override fun onDocCompleted() {}
-                override fun onPasswordRequired() {}
+                override fun onPageLoaded(pagesLoaded: Int) {
+                    //  called when another page is loaded from the document.
+                }
+                override fun onDocCompleted() {
+                    //  called when the document is done loading.
+                }
+                override fun onPasswordRequired() {
+                    //  called when a password is required.
+                }
+                override fun onViewChanged(scale: Float, scrollX: Int, scrollY: Int, selectionRect: Rect?) {
+                    //  called when the scale, scroll, or selection in the document changes.
+                }
             })
 
             //  set a listener for when the document view is closed.
@@ -98,6 +108,8 @@ class DocEditorActivityK : AppCompatActivity() {
             //  set a listener for document events
             dv.setDocumentListener(object : DocumentListener {
                 override fun onPageLoaded(pagesLoaded: Int) {
+                    //  called when another page is loaded from the document.
+
                     // Work on a constant copy of mDocumentView
                     val documentViewCopy = mDocumentView
 
@@ -106,25 +118,33 @@ class DocEditorActivityK : AppCompatActivity() {
                             mOriginalScale = dv1.getScaleFactor()
 
                         Log.d("DocumentListener",
-                              "onPageLoaded pages= " + dv1.getPageCount())
+                                "onPageLoaded pages= " + dv1.getPageCount())
                         updateUI()
                     }
                 }
 
                 override fun onDocCompleted() {
+                    //  called when the document is done loading.
+
                     // Work on a constant copy of mDocumentView
                     val documentViewsCopy = mDocumentView
 
                     documentViewsCopy?.let { dv1 ->
                         Log.d("DocumentListener",
-                              "onDocCompleted pages= " + dv1.getPageCount())
+                                "onDocCompleted pages= " + dv1.getPageCount())
                         updateUI()
                     }
                 }
 
                 override fun onPasswordRequired() {
+                    //  called when a password is required.
                     Log.d("DocumentListener", "onPasswordRequired")
                     handlePassword()
+                }
+
+                override fun onViewChanged(scale: Float, scrollX: Int, scrollY: Int, selectionRect: Rect?) {
+                    //  called when the scale, scroll, or selection in the document changes.
+                    Log.d("DocumentListener", "onViewportChanged")
                 }
             })
 
@@ -366,12 +386,12 @@ class DocEditorActivityK : AppCompatActivity() {
             // Work on a constant copy of mDocumentView
             val documentViewCopy = mDocumentView
 
-            documentViewCopy?.let { dv -> 
+            documentViewCopy?.let { dv ->
                 //  get a new path.  The customer would provide a way to specify a new
                 mUri?.path?.let { uriPath ->
                     //  name and location.
                     val f = File(uriPath)
-                    
+
                     f.parentFile?.path?.let { pPath ->
                         val newPath = pPath + "/testFile.pdf"
 
@@ -392,7 +412,7 @@ class DocEditorActivityK : AppCompatActivity() {
                             }
                         }
                     } ?: run {
-                        showMessage("'" + uriPath +"' has no parent")
+                        showMessage("'" + uriPath + "' has no parent")
                     }
                 } ?: run {
                     showMessage("URI path is null")

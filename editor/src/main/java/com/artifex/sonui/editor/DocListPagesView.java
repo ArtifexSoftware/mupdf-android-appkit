@@ -610,4 +610,9 @@ public class DocListPagesView extends DocView
         return false;
     }
 
+    @Override
+    protected void reportViewChanges()
+    {
+    }
+
 }

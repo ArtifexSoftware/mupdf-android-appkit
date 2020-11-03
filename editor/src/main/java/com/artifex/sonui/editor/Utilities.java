@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Environment;
@@ -1359,6 +1360,32 @@ public class Utilities
             e.printStackTrace();
         }
         return false;
+    }
+
+    //  compare two rects for equality
+    //  returns true if they are the same
+    public static boolean compareRects(Rect r1, Rect r2)
+    {
+        if (r1==null) {
+            if (r2==null) {
+                //  both are null
+                return true;
+            }
+            else {
+                //  one is null, the other not
+                return false;
+            }
+        }
+        else {
+            if (r2==null) {
+                //  one is null, the other not
+                return false;
+            }
+            else {
+                //  both are not null, so compare
+                return r1.equals(r2);
+            }
+        }
     }
 
 }

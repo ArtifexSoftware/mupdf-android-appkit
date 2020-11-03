@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,14 +64,22 @@ public class DocEditorActivity extends AppCompatActivity {
         mDocumentView.setDocumentListener(new DocumentListener() {
             @Override
             public void onPageLoaded(int pagesLoaded) {
+                //  called when another page is loaded from the document.
             }
 
             @Override
             public void onDocCompleted() {
+                //  called when the document is done loading.
             }
 
             @Override
             public void onPasswordRequired() {
+                //  called when a password is required.
+            }
+
+            @Override
+            public void onViewChanged(float scale, int scrollX, int scrollY, Rect selectionRect) {
+                //  called when the scale, scroll, or selection in the document changes.
             }
         });
 
@@ -103,6 +112,7 @@ public class DocEditorActivity extends AppCompatActivity {
         mDocumentView.setDocumentListener(new DocumentListener() {
             @Override
             public void onPageLoaded(int pagesLoaded) {
+                //  called when another page is loaded from the document.
                 if (mOriginalScale==-1)
                     mOriginalScale = mDocumentView.getScaleFactor();
                 Log.d("DocumentListener", "onPageLoaded pages= " + mDocumentView.getPageCount());
@@ -111,14 +121,22 @@ public class DocEditorActivity extends AppCompatActivity {
 
             @Override
             public void onDocCompleted() {
+                //  called when the document is done loading.
                 Log.d("DocumentListener", "onDocCompleted pages= " + mDocumentView.getPageCount());
                 updateUI();
             }
 
             @Override
             public void onPasswordRequired() {
+                //  called when a password is required.
                 Log.d("DocumentListener", "onPasswordRequired");
                 handlePassword();
+            }
+
+            @Override
+            public void onViewChanged(float scale, int scrollX, int scrollY, Rect selectionRect) {
+                //  called when the scale, scroll, or selection in the document changes.
+                Log.d("DocumentListener", "onViewportChanged");
             }
         });
 

@@ -3750,6 +3750,8 @@ public class NUIDocView
             mDocPageListView.onSelectionChanged();
 
         updateUIAppearance();
+
+        reportViewChanges();
     }
 
     public void triggerRender()
@@ -6053,5 +6055,66 @@ public class NUIDocView
     {
         if (mDocView != null)
             mDocView.setScaleAndScroll(newScale, newX, newY);
+    }
+
+    //  keep track of changes in these values with each call to reportViewChanges
+    private float scalePrev = 0;
+    private int scrollXPrev = -1;
+    private int scrollYPrev = -1;
+    private Rect selectionPrev = null;
+
+
+    //  the following function is called when scrolling, scaling, or selection changes.
+    //  it does some filtering to weed out repetitions, and then calls the no-UI
+    //  DocumentListener, if there is one.
+
+    public void reportViewChanges()
+    {
+        //  don't bother if there is no listener
+        if (mDocumentListener==null)
+            return;
+
+        if (mDocView == null)
+            return;
+
+        //  get current scale, scroll values
+        float scale = mDocView.getScale();
+        int scrollX = mDocView.getScrollX();
+        int scrollY = mDocView.getScrollY();
+
+        //  get the selection rect, if any
+        Rect selectionRect = null;
+        ArDkSelectionLimits limits = mDocView.getSelectionLimits();
+        DocPageView selStartPage = mDocView.getSelectionStartPage();
+        if (limits != null && selStartPage != null)
+        {
+            RectF box = limits.getBox();
+            if (box != null) {
+                selectionRect = selStartPage.pageToView(box);
+                selectionRect.offset((int) selStartPage.getX(), (int) selStartPage.getY());
+            }
+        }
+
+        //  see if anything's changed since the last call
+        boolean changed = false;
+        if (scale!=scalePrev)
+            changed = true;
+        if (scrollX!=scrollXPrev)
+            changed = true;
+        if (scrollY!=scrollYPrev)
+            changed = true;
+        if (!Utilities.compareRects(selectionPrev, selectionRect))
+            changed = true;
+        if (!changed)
+            return;  //  nothing changed
+
+        //  save new values for next time
+        scalePrev = scale;
+        scrollXPrev = scrollX;
+        scrollYPrev = scrollY;
+        selectionPrev = selectionRect;
+
+        //  call the listener
+        mDocumentListener.onViewChanged(scale, scrollX, scrollY, selectionRect);
     }
 }

@@ -141,7 +141,9 @@ public class DocView
 
     //  pages containing the start and end of the current selection.
     protected DocPageView mSelectionStartPage;
+    public DocPageView getSelectionStartPage() {return mSelectionStartPage;}
     protected DocPageView mSelectionEndPage;
+    public DocPageView getSelectionEndPage() {return mSelectionEndPage;}
 
     //  on each layout, compute the page that has the most visible height.
     //  That's considered to be the "current" page for purposes of drawing the blue dot
@@ -1872,6 +1874,8 @@ public class DocView
                 }
             });
         }
+
+        reportViewChanges();
     }
 
     private boolean once = true;
@@ -3679,5 +3683,10 @@ public class DocView
                 mHostActivity.setCurrentPage(mostVisibleChild);
             }
         });
+    }
+
+    protected void reportViewChanges()
+    {
+        mHostActivity.reportViewChanges();
     }
 }
