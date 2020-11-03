@@ -40,20 +40,8 @@ android {
     }
 
     sourceSets {
-
         main {
             java {
-            }
-        }
-
-        regular {
-            assets {
-                srcDir "${rootProject.ext.sodk_resources}/assets"
-                project.logger.lifecycle("** sodk_resources: assets: ${rootProject.ext.sodk_resources}/assets")
-            }
-            res {
-                srcDir "${rootProject.ext.sodk_resources}/res"
-                project.logger.lifecycle("** sodk_resources: res: ${rootProject.ext.sodk_resources}/res")
             }
         }
     }

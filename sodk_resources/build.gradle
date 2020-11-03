@@ -25,8 +25,6 @@ allprojects {
         minSdkVersion=19
         targetSdkVersion=29
         compileSdkVersion=29
-
-        sodk_resources=""
     }
 
     project.tasks.whenTaskAdded { task ->

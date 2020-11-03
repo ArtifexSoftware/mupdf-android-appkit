@@ -503,7 +503,7 @@ public class ConfigOptions implements Cloneable, Parcelable
     {
         mCustomSaveEnabled = isEnabled;
 
-        Log.i(mDebugTag, "mSaveEnabled set to " +
+        Log.i(mDebugTag, "mCustomSaveEnabled set to " +
                          String.valueOf(mCustomSaveEnabled));
     }
 
