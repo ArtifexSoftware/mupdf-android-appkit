@@ -248,8 +248,11 @@ public class DocMuPdfPageView extends DocPdfPageView
         mEditingWidgetIndex = -1;
         if (mFormFields !=null && mFormFields.length>0)
         {
-            for (int i=0; i<mFormFields.length ;i++)
+            for (int j=0; j<mFormFields.length ;j++)
             {
+                //  go from front to back.
+                int i = mFormFields.length - j - 1;
+
                 MuPDFWidget mw = mFormFields[i];
                 if (mFormFieldBounds[i].contains(x, y))
                 {
