@@ -81,7 +81,7 @@ public class PDFFormTextEditor extends PDFFormEditor
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
-                if (actionId == EditorInfo.IME_ACTION_DONE)
+                if (actionId == EditorInfo.IME_ACTION_NEXT)
                 {
                     boolean stopped = stop();
                     if (!stopped)
@@ -352,7 +352,7 @@ public class PDFFormTextEditor extends PDFFormEditor
 
         int imeOpt = EditorInfo.IME_ACTION_NONE;
         if (!isMultiline)
-            imeOpt = EditorInfo.IME_ACTION_DONE;
+            imeOpt = EditorInfo.IME_ACTION_NEXT;
 
         imeOpt |= EditorInfo.IME_FLAG_NO_EXTRACT_UI;
         imeOpt |= EditorInfo.IME_FLAG_NO_FULLSCREEN;

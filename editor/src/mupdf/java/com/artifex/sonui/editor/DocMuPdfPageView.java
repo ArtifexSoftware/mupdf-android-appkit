@@ -276,10 +276,14 @@ public class DocMuPdfPageView extends DocPdfPageView
             if (stopped)
             {
                 mFormEditorPage.mFormEditor = null;
-                mFormEditorPage.mEditingWidgetIndex = -1;
-                mFormEditorPage.mEditingWidget = null;
                 mFormEditorPage.invalidate();
-                mFormEditorPage = null;
+
+                if (mFormEditorPage != this) {
+                    //  if we've switched to a new page,
+                    //  reset these values on the page we're leaving.
+                    mFormEditorPage.mEditingWidgetIndex = -1;
+                    mFormEditorPage.mEditingWidget = null;
+                }
             }
             return stopped;
         }
