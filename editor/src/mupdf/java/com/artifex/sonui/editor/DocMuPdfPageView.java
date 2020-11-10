@@ -47,8 +47,6 @@ public class DocMuPdfPageView extends DocPdfPageView
 
     //  if a text field is being edited, this will be non-null
     private PDFFormEditor mFormEditor = null;
-    //  the page view that holds the text field being edited
-    public static DocMuPdfPageView mFormEditorPage = null;
 
     //  keep track of the currently-being-edited widget.
     private MuPDFWidget mEditingWidget = null;
@@ -272,6 +270,8 @@ public class DocMuPdfPageView extends DocPdfPageView
     {
         //  mFormEditor might be on another page view.
         //  so we reference it through that page view.
+
+        DocMuPdfPageView mFormEditorPage = ((DocPdfView)getDocView()).mFormEditorPage;
 
         if (mFormEditorPage !=null && mFormEditorPage.mFormEditor != null)
         {
@@ -749,7 +749,7 @@ public class DocMuPdfPageView extends DocPdfPageView
             }
         });
 
-        mFormEditorPage = this;
+        ((DocPdfView)getDocView()).mFormEditorPage = this;
         mFormEditor = ((Activity)getContext()).findViewById(R.id.pdf_form_checkbox_editor_layout);
         mFormEditor.start(this, getPageNumber(), ((MuPDFDoc)getDoc()),
                 docView, widget, mFormFieldBounds[mEditingWidgetIndex],
@@ -786,7 +786,7 @@ public class DocMuPdfPageView extends DocPdfPageView
             }
         });
 
-        mFormEditorPage = this;
+        ((DocPdfView)getDocView()).mFormEditorPage = this;
         mFormEditor = ((Activity)getContext()).findViewById(R.id.pdf_form_text_editor_layout);
         mFormEditor.start(this, getPageNumber(), ((MuPDFDoc)getDoc()),
                 docView, widget, mFormFieldBounds[mEditingWidgetIndex],

@@ -48,6 +48,11 @@ public class DocPdfView extends DocView
     private Point mResizingMovingPointAtStart;  //  where the moving point was at the start of resizing
     private boolean dragging = false;           //  true if we're dragging a handle
 
+    //  the page view that holds the widget being edited
+    //  put here instead fo using a static value in the page view class.
+    //  a fix for the crash in https://bugs.ghostscript.com/show_bug.cgi?id=703097
+    public DocMuPdfPageView mFormEditorPage = null;
+
     //  page on which we just created a signature.
     //  this is set when the signature is created,
     //  and used in onSelectionChanged()
