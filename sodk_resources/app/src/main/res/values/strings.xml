@@ -311,6 +311,7 @@
 
     <string name="sodk_editor_signature">Signature</string>
     <string name="sodk_editor_signature_message">Would you like to sign the document,\nreposition the field, or delete the field?</string>
+    <string name="sodk_editor_signature_message_short">Would you like to sign the document?</string>
     <string name="sodk_editor_signature_sign">Sign</string>
     <string name="sodk_editor_signature_reposition">Reposition</string>
 

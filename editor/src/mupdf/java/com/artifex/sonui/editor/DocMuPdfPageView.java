@@ -218,15 +218,26 @@ public class DocMuPdfPageView extends DocPdfPageView
         mFormFields = page.findFormFields();
         if (mFormFields !=null && mFormFields.length>0)
         {
+            //  set the initial number of form fields for this page
+            if (numInitialFormFields==-1)
+                numInitialFormFields = mFormFields.length;
+
             mFormFieldBounds = new Rect[mFormFields.length];
             int i=0;
             for (MuPDFWidget mw : mFormFields)
             {
+                //  track which form fields were created in this session
+                if (numInitialFormFields!=-1 && i>numInitialFormFields-1)
+                    mFormFields[i].setCreatedInThisSession(true);
+
                 mFormFieldBounds[i] = mw.getBounds();
                 i++;
             }
         }
     }
+
+    //  this value represents how many form fields we saw when the session began.
+    private int numInitialFormFields = -1;
 
     public MuPDFWidget getNewestWidget()
     {
@@ -372,6 +383,18 @@ public class DocMuPdfPageView extends DocPdfPageView
             else {
                 Utilities.hideKeyboard(getContext());
             }
+        }
+
+        //  prevent signatures from being edited if signing is not enabled.
+        MuPDFWidget widget = findTappedWidget(pPage.x, pPage.y);
+        if (widget!=null && widget.getKind()==MuPDFWidget.TYPE_SIGNATURE)
+        {
+            if (docCfgOpts.isFormSigningFeatureEnabled()) {
+                editWidget(widget, true, pPage);
+                return true;
+            }
+            else
+                return false;
         }
 
         //  Notify ignored interaction if user tapped on a widget
@@ -578,50 +601,85 @@ public class DocMuPdfPageView extends DocPdfPageView
 
                 //  the widget's not yet been signed, so
 
-                final DocPdfPageView pageView = this;
+                if (widget.getCreatedInThisSession())
+                {
+                    //  created this session, so show the full signature dialog
 
-                ContextThemeWrapper ctw = new ContextThemeWrapper(getContext(), R.style.sodk_editor_alert_dialog_style);
-                final AlertDialog alert = new AlertDialog.Builder(ctw).create();
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                View view = inflater.inflate(R.layout.sodk_editor_signature_dialog, null);
-                alert.setView(view);
+                    final DocPdfPageView pageView = this;
 
-                view.findViewById(R.id.sign_button).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alert.dismiss();
-                        doSign(widget);
-                    }
-                });
+                    ContextThemeWrapper ctw = new ContextThemeWrapper(getContext(), R.style.sodk_editor_alert_dialog_style);
+                    final AlertDialog alert = new AlertDialog.Builder(ctw).create();
+                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                    View view = inflater.inflate(R.layout.sodk_editor_signature_dialog, null);
+                    alert.setView(view);
 
-                view.findViewById(R.id.reposition_button).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alert.dismiss();
-                        DocPdfView dpv = (DocPdfView)getDocView();
-                        dpv.doReposition(pageView, widget);
-                    }
-                });
+                    view.findViewById(R.id.sign_button).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alert.dismiss();
+                            doSign(widget);
+                        }
+                    });
 
-                view.findViewById(R.id.delete_button).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alert.dismiss();
-                        DocPdfView dpv = (DocPdfView)getDocView();
-                        dpv.setDeletingPage((DocPdfPageView)DocMuPdfPageView.this);
-                        MuPDFDoc doc = (MuPDFDoc) getDoc();
-                        doc.deleteWidget(getPageNumber(), widget);
-                    }
-                });
+                    view.findViewById(R.id.reposition_button).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alert.dismiss();
+                            DocPdfView dpv = (DocPdfView)getDocView();
+                            dpv.doReposition(pageView, widget);
+                        }
+                    });
 
-                view.findViewById(R.id.cancel_button).setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alert.dismiss();
-                    }
-                });
+                    view.findViewById(R.id.delete_button).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alert.dismiss();
+                            DocPdfView dpv = (DocPdfView)getDocView();
+                            dpv.setDeletingPage((DocPdfPageView)DocMuPdfPageView.this);
+                            MuPDFDoc doc = (MuPDFDoc) getDoc();
+                            doc.deleteWidget(getPageNumber(), widget);
+                        }
+                    });
 
-                alert.show();
+                    view.findViewById(R.id.cancel_button).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alert.dismiss();
+                        }
+                    });
+
+                    alert.show();
+                }
+                else
+                {
+                    //  NOT created this session, so show the short signature dialog
+
+                    final DocPdfPageView pageView = this;
+
+                    ContextThemeWrapper ctw = new ContextThemeWrapper(getContext(), R.style.sodk_editor_alert_dialog_style);
+                    final AlertDialog alert = new AlertDialog.Builder(ctw).create();
+                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                    View view = inflater.inflate(R.layout.sodk_editor_signature_dialog_short, null);
+                    alert.setView(view);
+
+                    view.findViewById(R.id.sign_button).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alert.dismiss();
+                            doSign(widget);
+                        }
+                    });
+
+                    view.findViewById(R.id.cancel_button).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alert.dismiss();
+                        }
+                    });
+
+                    alert.show();
+
+                }
 
             } else {
                 // create a verifier

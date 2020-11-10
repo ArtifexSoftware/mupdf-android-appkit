@@ -298,4 +298,7 @@
     <!-- for the content border-->
     <color name="sodk_editor_content_border">@color/sodk_editor_transparent</color>
 
+    <!-- for signature dialogs -->
+    <color name="sodk_editor_sigdlg_text">@color/sodk_editor_palette_black</color>
+
 </resources>

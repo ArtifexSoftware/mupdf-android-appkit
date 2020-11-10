@@ -178,4 +178,7 @@
     <!-- Tablet Dcoument Tab Border Color. -->
     <color name="sodk_editor_tab_stroke">@color/sodk_editor_palette_white</color>
 
+    <!-- for signature dialogs -->
+    <color name="sodk_editor_sigdlg_text">@color/sodk_editor_palette_white</color>
+
 </resources>
