@@ -37,6 +37,8 @@ public class ListWheelDialog
         final ArrayWheelAdapter<String> adapter = new ArrayWheelAdapter<String>(context, values);
         wheel.setViewAdapter(adapter);
         wheel.setVisibleItems(5);
+        adapter.setTextColor(context.getResources().getColor(
+            R.color.sodk_editor_wheel_item_text_color));
 
         //  set wheel current value
         int currentIndex = -1;
