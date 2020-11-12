@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.artifex.solib.ArDkLib;
-import com.artifex.solib.ConfigOptions;
 import com.artifex.solib.ArDkUtils;
+import com.artifex.solib.ConfigOptions;
+
+import java.lang.Class;
+import java.lang.reflect.Constructor;
 
 public class NUIActivity extends BaseActivity
 {
@@ -49,17 +52,7 @@ public class NUIActivity extends BaseActivity
     // duplicate the current application configuration
     private ConfigOptions duplicateAppConfigurations()
     {
-        ConfigOptions cfg = null;
-        try
-        {
-            cfg = ArDkLib.getAppConfigOptions().clone();
-        }
-        catch(CloneNotSupportedException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        return cfg;
+        return new ConfigOptions(ArDkLib.getAppConfigOptions());
     }
 
     private void setupDocumentSpecifics(Intent intent)
@@ -67,8 +60,37 @@ public class NUIActivity extends BaseActivity
         // Set the configuration for the new document.
         if (intent.hasExtra("CONFIG_OPTS"))
         {
-            // configuration was delivered via intent.
-            mDocConfigOpts = (ConfigOptions) intent.getExtras().getParcelable("CONFIG_OPTS");
+            try
+            {
+                // Obtain the configuration bundle from the intent.
+                Bundle bundle = intent.getBundleExtra("CONFIG_OPTS");
+
+                /*
+                 * Obtain the constructor for the correct configuration
+                 * options class.
+                 */
+                Class cls = Class.forName(
+                                 bundle.getString(ConfigOptions.ClassNameKey));
+
+                Class<?>[] type     = { Bundle.class };
+                Constructor<?> cons = cls.getConstructor(type);
+
+                /*
+                 * Create an instance of the configuration options class
+                 * initialised with received options bundle.
+                 */
+                Object[] obj       = { bundle };
+                Object newInstance = cons.newInstance(obj);
+                mDocConfigOpts     = (ConfigOptions)newInstance;
+            }
+            catch (Exception e)
+            {
+                // This should never happen.
+                e.printStackTrace();
+
+                mDocConfigOpts = null;
+                return;
+            }
         }
         else
         {
@@ -188,6 +210,12 @@ public class NUIActivity extends BaseActivity
 
         // create document specifics
         setupDocumentSpecifics(intent);
+
+        // We failed to obtain the document specifics.
+        if (mDocConfigOpts == null)
+        {
+            return;
+        }
 
         if (mDocConfigOpts.isDocExpired())
         {
