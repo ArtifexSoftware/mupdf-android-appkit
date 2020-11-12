@@ -205,6 +205,34 @@ public class DocMuPdfPageView extends DocPdfPageView
         }
 
         doc.update(getPageNumber());
+
+        //  if there are saved values for a previous form editor,
+        //  and they are for this page, apply them now.
+
+        if (getPageNumber() == ((DocPdfView)getDocView()).mPausedPageIndex)
+        {
+            final int pageIndex = ((DocPdfView)getDocView()).mPausedPageIndex;
+            final int editorIndex = ((DocPdfView)getDocView()).mPausedEditorIndex;
+            final String editorValue = ((DocPdfView)getDocView()).mPausedEditorValue;
+
+            ((DocPdfView)getDocView()).mPausedEditorIndex = -1;
+            ((DocPdfView)getDocView()).mPausedPageIndex = -1;
+            ((DocPdfView)getDocView()).mPausedEditorValue = null;
+
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    if (getPageNumber() == pageIndex)
+                    {
+                        MuPDFWidget widget = mFormFields[editorIndex];
+                        editWidgetAsText(widget);
+                        mEditingWidget = widget;
+                        mEditingWidgetIndex = editorIndex;
+                        mFormEditor.setNewValue(editorValue);
+                    }
+                }
+            });
+        }
     }
 
     public void collectFormFields()
@@ -279,6 +307,12 @@ public class DocMuPdfPageView extends DocPdfPageView
 
     protected boolean stopPreviousEditor()
     {
+        //  normal stop (not a cancel)
+        return stopPreviousEditor(false);
+    }
+
+    protected boolean stopPreviousEditor(boolean cancel)
+    {
         //  mFormEditor might be on another page view.
         //  so we reference it through that page view.
 
@@ -286,7 +320,12 @@ public class DocMuPdfPageView extends DocPdfPageView
 
         if (mFormEditorPage !=null && mFormEditorPage.mFormEditor != null)
         {
-            boolean stopped = mFormEditorPage.mFormEditor.stop();
+            //  stop or cancel
+            boolean stopped;
+            if (cancel)
+                stopped = mFormEditorPage.mFormEditor.cancel();
+            else
+                stopped = mFormEditorPage.mFormEditor.stop();
             if (stopped)
             {
                 mFormEditorPage.mFormEditor = null;
@@ -916,5 +955,22 @@ public class DocMuPdfPageView extends DocPdfPageView
 
         //  assume that the new one is last in the list
         return count;
+    }
+
+    @Override
+    protected void onPause()
+    {
+        if (mEditingWidgetIndex>=0)
+        {
+            //  save values for the current form editor.
+            //  we save them to our DocView, which should still be valid
+            //  upon resume.
+            ((DocPdfView)getDocView()).mPausedEditorIndex = mEditingWidgetIndex;
+            ((DocPdfView)getDocView()).mPausedPageIndex = getPageNumber();
+            ((DocPdfView)getDocView()).mPausedEditorValue = mFormEditor.getValue();
+        }
+
+        //  cancel any form editing
+        stopPreviousEditor(true);
     }
 }

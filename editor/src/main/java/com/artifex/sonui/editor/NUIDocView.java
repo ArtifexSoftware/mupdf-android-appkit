@@ -4343,6 +4343,10 @@ public class NUIDocView
 
     protected void onPauseCommon()
     {
+        //  let the page views know
+        if (mDocView!=null)
+            mDocView.pauseChildren();
+
         saveState();
 
         mIsActivityActive = false;

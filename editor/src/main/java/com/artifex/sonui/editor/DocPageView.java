@@ -1145,4 +1145,8 @@ public class DocPageView extends View implements SOPageListener
         Point p2 = screenToPage(r.right, r.bottom);
         return new Rect(p1.x, p1.y, p2.x, p2.y);
     }
+
+    protected void onPause()
+    {
+    }
 }

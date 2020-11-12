@@ -1133,6 +1133,14 @@ public class DocView
             cv.setNewScale(mScale);
         }
     }
+    protected void pauseChildren()
+    {
+        //  pause children
+        for (int i=0; i<getPageCount(); i++) {
+            DocPageView cv = (DocPageView)getOrCreateChild(i);
+            cv.onPause();
+        }
+    }
 
     public void setScale(float val)
     {

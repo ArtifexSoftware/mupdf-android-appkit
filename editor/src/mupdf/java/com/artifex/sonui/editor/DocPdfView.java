@@ -53,6 +53,12 @@ public class DocPdfView extends DocView
     //  a fix for the crash in https://bugs.ghostscript.com/show_bug.cgi?id=703097
     public DocMuPdfPageView mFormEditorPage = null;
 
+    //  if a form field is being edited, these values are stored here at Pause,
+    //  and restored when the file is reloaded.
+    public int mPausedEditorIndex=-1;
+    public int mPausedPageIndex=-1;
+    public String mPausedEditorValue=null;
+
     //  page on which we just created a signature.
     //  this is set when the signature is created,
     //  and used in onSelectionChanged()

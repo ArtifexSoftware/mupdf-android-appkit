@@ -380,6 +380,22 @@ public class PDFFormTextEditor extends PDFFormEditor
 
         //  get the widget's current value and set it in the edit field
         String str = mWidget.getValue().trim();
+        mOriginalValue = str;
+        mEditText.setText(str);
+        setWidgetText(str);
+        mWaitingForRender = true;
+        mSetInitialSelection = true;
+    }
+
+    @Override
+    protected void setNewValue(String val)
+    {
+        //  start in the editing state
+        mWidget.setEditingState(true);
+
+        //  get the widget's current value and set it in the edit field
+        String str = val;
+        mOriginalValue = str;
         mEditText.setText(str);
         setWidgetText(str);
         mWaitingForRender = true;
@@ -766,6 +782,21 @@ public class PDFFormTextEditor extends PDFFormEditor
             mDoc.update(mPageNumber);
         }
         return accepted;
+    }
+
+    @Override
+    public boolean cancel()
+    {
+        //  when cancelling an edit, we first restore the starting value,
+        //  and dismiss the validation alert that may be showing
+        //  before proceeding with the stop().
+        //
+        //  the assumptioon here is that the starting value was
+        //  valid, and won't result in another validation error.
+
+        Utilities.dismissCurrentAlert();
+        mEditText.setText(mOriginalValue);
+        return stop();
     }
 
     @Override
