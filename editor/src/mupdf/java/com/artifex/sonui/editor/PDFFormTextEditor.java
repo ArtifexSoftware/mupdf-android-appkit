@@ -795,6 +795,7 @@ public class PDFFormTextEditor extends PDFFormEditor
         //  valid, and won't result in another validation error.
 
         Utilities.dismissCurrentAlert();
+        messageDisplayed = false;
         mEditText.setText(mOriginalValue);
         return stop();
     }

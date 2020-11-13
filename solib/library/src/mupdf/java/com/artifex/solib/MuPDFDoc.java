@@ -448,14 +448,8 @@ public class MuPDFDoc extends ArDkDoc
         {
             public void work()
             {
-                if (mDocument != null)
-                {
-                    PDFDocument pdfDoc = MuPDFDoc.getPDFDocument(mDocument);
-                    if (pdfDoc!=null) {
-                        //  disable javascript
-                        pdfDoc.setJsEventListener(null);
-                        pdfDoc.disableJs();
-                    }
+                if (mDocument != null) {
+                    disableJavascript(mDocument);
                 }
             }
 
@@ -1126,15 +1120,8 @@ public class MuPDFDoc extends ArDkDoc
         mPageCount = mDocument.countPages();
 
         //  enable javascript
-        if (mDocCfgOpts.isFormFillingEnabled())
-        {
-            PDFDocument pdfDoc = MuPDFDoc.getPDFDocument(mDocument);
-            if (pdfDoc!=null) {
-
-                //  enable javascript and establish a listener
-                pdfDoc.enableJs();
-                pdfDoc.setJsEventListener(jsEventListener);
-            }
+        if (mDocCfgOpts.isFormFillingEnabled()) {
+            enableJavascript(mDocument);
         }
     }
 
@@ -1296,6 +1283,9 @@ public class MuPDFDoc extends ArDkDoc
                 ArrayList<MuPDFPage> oldPages = mPages;
                 mPages = newPages;
 
+                //  disable Javascript for the old doc
+                disableJavascript(mDocument);
+
                 //  replace the Document
                 Document oldDoc = mDocument;
                 mDocument = newDoc;
@@ -1313,10 +1303,32 @@ public class MuPDFDoc extends ArDkDoc
                 //  destroy the now-unreferenced Document
                 oldDoc.destroy();
 
+                //  re-enable javascript for the new doc
+                if (mDocCfgOpts.isFormFillingEnabled()) {
+                    enableJavascript(mDocument);
+                }
+
                 //  tell someone
                 listener.onReload();
             }
         });
+    }
+
+    protected void enableJavascript(Document doc)
+    {
+        PDFDocument pdfDoc = MuPDFDoc.getPDFDocument(doc);
+        if (pdfDoc != null) {
+            pdfDoc.enableJs();
+            pdfDoc.setJsEventListener(jsEventListener);
+        }
+    }
+
+    protected void disableJavascript(Document doc)
+    {
+        PDFDocument pdfDoc = MuPDFDoc.getPDFDocument(doc);
+        if (pdfDoc != null) {
+            pdfDoc.disableJs();
+        }
     }
 
     public static Document openFile(String path)
