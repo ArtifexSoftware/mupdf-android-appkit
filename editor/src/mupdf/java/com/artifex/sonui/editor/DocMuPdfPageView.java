@@ -911,6 +911,10 @@ public class DocMuPdfPageView extends DocPdfPageView
             }
         }
 
+        //  a touch that's not consumed by an editor should result in the keyboard
+        //  being dismissed, as well as the editor being stopped.
+        Utilities.hideKeyboard(getContext());  //  fix #703126
+
         stopPreviousEditor();
         mEditingWidget = null;
         mEditingWidgetIndex = -1;
