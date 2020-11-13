@@ -54,6 +54,9 @@ class DocEditorActivityK : AppCompatActivity() {
         // Work on a constant copy of mDocumentView
         val documentView = mDocumentView
 
+        documentView?.setDocConfigOptions(ArDkLib.getAppConfigOptions())
+        documentView?.setDocDataLeakHandler(Utilities.getDataLeakHandlers())
+
         documentView?.let { dv -> 
             dv.setDocConfigOptions(ArDkLib.getAppConfigOptions())
 
@@ -101,6 +104,9 @@ class DocEditorActivityK : AppCompatActivity() {
 
         // Work on a constant copy of mDocumentView
         val documentView = mDocumentView
+
+        documentView?.setDocConfigOptions(ArDkLib.getAppConfigOptions())
+        documentView?.setDocDataLeakHandler(Utilities.getDataLeakHandlers())
 
         documentView?.let { dv -> 
             dv.setDocConfigOptions(ArDkLib.getAppConfigOptions())

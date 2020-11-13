@@ -656,7 +656,19 @@ public class DocMuPdfPageView extends DocPdfPageView
                         @Override
                         public void onClick(View v) {
                             alert.dismiss();
-                            doSign(widget);
+
+                            /*
+                             * Execute signing via the document
+                             * worker thread to ensure data integrity.
+                             */
+                            Worker worker = ((MuPDFDoc)getDoc()).getWorker();
+                            worker.add(new Worker.Task() {
+                                public void work() {
+                                    doSign(widget);
+                                }
+                                public void run() {
+                                }
+                            });
                         }
                     });
 

@@ -59,6 +59,7 @@ public class DocEditorActivity extends AppCompatActivity {
         mDocumentView = findViewById(com.artifex.sonui.editor.R.id.doc_view);
 
         mDocumentView.setDocConfigOptions(ArDkLib.getAppConfigOptions());
+        mDocumentView.setDocDataLeakHandler(Utilities.getDataLeakHandlers());
 
         //  set an optional listener for document events
         mDocumentView.setDocumentListener(new DocumentListener() {
@@ -107,6 +108,7 @@ public class DocEditorActivity extends AppCompatActivity {
         mDocumentView = findViewById(R.id.doc_view);
 
         mDocumentView.setDocConfigOptions(ArDkLib.getAppConfigOptions());
+        mDocumentView.setDocDataLeakHandler(Utilities.getDataLeakHandlers());
 
         //  set a listener for document events
         mDocumentView.setDocumentListener(new DocumentListener() {

@@ -42,6 +42,8 @@ import com.artifex.sonui.editor.SODataLeakHandlers;
 import com.artifex.sonui.editor.SOSaveAsComplete;
 import com.artifex.sonui.editor.SOCustomSaveComplete;
 
+import static com.artifex.sonui.editor.SOSaveAsComplete.SOSaveAsComplete_Error;
+
 public class DataLeakHandlers implements SODataLeakHandlers
 {
     private final  String           mDebugTag  = "DataLeakHandlers";
@@ -408,9 +410,6 @@ public class DataLeakHandlers implements SODataLeakHandlers
            throw new UnsupportedOperationException();
         }
 
-        // Start a progress dialog.
-        displayProgressDialogue("Saving Document", "", false);
-
         /*
          * Allow the user to select the save location and file name.
          *
@@ -418,47 +417,58 @@ public class DataLeakHandlers implements SODataLeakHandlers
          */
         final String newPath = mTempFolderPath + filename;
 
-        // Save the document.
-        doc.saveTo(newPath, new SODocSaveListener()
+        // notify that we are about to save
+        if (completionCallback.onFilenameSelected( newPath ))
         {
-            @Override
-            public void onComplete(int result, int err)
+            // Start a progress dialog.
+            displayProgressDialogue("Saving Document", "", false);
+
+            // Save the document.
+            doc.saveTo(newPath, new SODocSaveListener()
             {
-                // Dismiss the progress dialog.
-                if (mProgressDialog != null)
+                @Override
+                public void onComplete(int result, int err)
                 {
-                    mProgressDialog.dismiss();
-                    mProgressDialog = null;
-                }
+                    // Dismiss the progress dialog.
+                    if (mProgressDialog != null)
+                    {
+                        mProgressDialog.dismiss();
+                        mProgressDialog = null;
+                    }
 
-                if (result == SODocSave_Succeeded)
-                {
-                    displayDialogue("Information",
-                                    "Document saved to '" + newPath     +
-                                    "'.\n\n"                            +
-                                    "Please implement a custom saveAs " +
-                                    "handler");
+                    if (result == SODocSave_Succeeded)
+                    {
+                        displayDialogue("Information",
+                                "Document saved to '" + newPath     +
+                                        "'.\n\n"                            +
+                                        "Please implement a custom saveAs " +
+                                        "handler");
 
-                    // Inform the application of the new file name and location.
-                    completionCallback.onComplete(
-                        SOSaveAsComplete.SOSaveAsComplete_Succeeded,
-                        newPath);
-                }
-                else
-                {
-                    displayDialogue("Information",
-                                    String.format("saveAsHandler failed: %d %d", result, err));
+                        // Inform the application of the new file name and location.
+                        completionCallback.onComplete(
+                                SOSaveAsComplete.SOSaveAsComplete_Succeeded,
+                                newPath);
+                    }
+                    else
+                    {
+                        displayDialogue("Information",
+                                String.format("saveAsHandler failed: %d %d", result, err));
 
-                    /*
-                     * Inform the application of the failure/cancellation of
-                     * the operation.
-                     */
-                    completionCallback.onComplete(
-                        SOSaveAsComplete.SOSaveAsComplete_Error,
-                        null);
+                        /*
+                         * Inform the application of the failure/cancellation of
+                         * the operation.
+                         */
+                        completionCallback.onComplete(
+                                SOSaveAsComplete.SOSaveAsComplete_Error,
+                                null);
+                    }
                 }
-            }
-        });
+            });
+        }
+        else
+        {
+            completionCallback.onComplete( SOSaveAsComplete_Error, null );
+        }
     }
 
     /**
