@@ -55,3 +55,18 @@
     java.lang.Object readResolve();
 }
 
+# NOTE: this seems to have become necessary with the latest build tools.
+# see: https://stackoverflow.com/questions/50989025/how-to-keep-the-classes-with-native-functions
+
+-keepclasseswithmembers,allowshrinking,allowoptimization class com.artifex.mupdf.fitz.** {
+    native <methods>;
+}
+-keepclassmembers class com.artifex.mupdf.fitz.** {
+    native <methods>;
+}
+-keepclasseswithmembers,allowshrinking,allowoptimization class com.artifex.mupdf.fitz.android.** {
+    native <methods>;
+}
+-keepclassmembers class com.artifex.mupdf.fitz.android.** {
+    native <methods>;
+}
