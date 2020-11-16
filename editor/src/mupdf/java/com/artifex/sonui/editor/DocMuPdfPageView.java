@@ -964,7 +964,7 @@ public class DocMuPdfPageView extends DocPdfPageView
     @Override
     protected void onPause()
     {
-        if (mEditingWidgetIndex>=0)
+        if (mEditingWidgetIndex>=0 && mFormEditor!=null && mFormEditor instanceof PDFFormTextEditor)
         {
             //  save values for the current form editor.
             //  we save them to our DocView, which should still be valid
