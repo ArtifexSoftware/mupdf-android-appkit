@@ -362,6 +362,19 @@ public class DocMuPdfPageView extends DocPdfPageView
     @Override
     public boolean onSingleTap(int x, int y, boolean canEditText, ExternalLinkListener listener)
     {
+        boolean result = onSingleTapInternal(x, y, canEditText, listener);
+
+        //  if at this point, if there's no active form field editor,
+        //  then it's safe to remove the keyboard.
+        //  this is a preferable fix for #703126
+        if (mEditingWidget==null)
+            Utilities.hideKeyboard(getContext());
+
+        return result;
+    }
+
+    private boolean onSingleTapInternal(int x, int y, boolean canEditText, ExternalLinkListener listener)
+    {
         ConfigOptions docCfgOpts = getDocView().getDocConfigOptions();
 
         //  assume nothing selected
@@ -922,10 +935,6 @@ public class DocMuPdfPageView extends DocPdfPageView
                 return true;
             }
         }
-
-        //  a touch that's not consumed by an editor should result in the keyboard
-        //  being dismissed, as well as the editor being stopped.
-        Utilities.hideKeyboard(getContext());  //  fix #703126
 
         stopPreviousEditor();
         mEditingWidget = null;

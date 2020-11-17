@@ -118,6 +118,37 @@ public class PDFFormTextEditor extends PDFFormEditor
             }
         });
 
+        //  set a listener for messages that mupdf's Javascript might emit.
+        MuPDFDoc.JsEventListener listener = new MuPDFDoc.JsEventListener() {
+            @Override
+            public void onAlert(String message) {
+                //  display a message if it's not yet been done
+                if (!messageDisplayed) {
+                    messageDisplayed = true;
+                    Utilities.showMessageAndWait((Activity) getContext(), "", message, new Runnable() {
+                        @Override
+                        public void run() {
+                            //  we can display another message now.
+                            messageDisplayed = false;
+                            Utilities.showKeyboard(getContext());
+                        }
+                    });
+                }
+                mEditText.requestFocus();
+            }
+        };
+        mDoc.setJsEventListener(listener);
+
+        //  focus our EditText and the underlying widget
+        mEditText.requestFocus();
+        mDoc.getWorker().add(new Worker.Task() {
+            public void work() {
+                widget.focus();
+            }
+            public void run() {
+            }
+        });
+
         setHandleListeners();
 
         invalidate();
@@ -753,27 +784,6 @@ public class PDFFormTextEditor extends PDFFormEditor
         mWidget.setEditingState(false);
 
         //  reassert the value, without the trailing ' '
-        //  set a listener for messages that mupdf's Javascript might emit.
-        MuPDFDoc.JsEventListener listener = new MuPDFDoc.JsEventListener() {
-            @Override
-            public void onAlert(String message) {
-                //  display a message if it's not yet been done
-                if (!messageDisplayed) {
-                    messageDisplayed = true;
-                    Utilities.showMessageAndWait((Activity) getContext(), "", message, new Runnable() {
-                        @Override
-                        public void run() {
-                            //  we can display another message now.
-                            messageDisplayed = false;
-                            Utilities.showKeyboard(getContext());
-                        }
-                    });
-                }
-                mEditText.requestFocus();
-            }
-        };
-        mDoc.setJsEventListener(listener);
-
         String str = mEditText.getText().toString();
         boolean accepted = mWidget.setValue(str);
         if (!accepted)

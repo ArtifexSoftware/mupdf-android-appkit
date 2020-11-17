@@ -220,4 +220,13 @@ public class MuPDFWidget
         return (PDFAnnotation)mWidget;
     }
 
+    public void focus()
+    {
+        //  give focus to the underlying PDFWidget
+        if (mWidget!=null) {
+            mWidget.eventFocus();
+            mWidget.eventDown();
+            mWidget.eventUp();
+        }
+    }
 }
