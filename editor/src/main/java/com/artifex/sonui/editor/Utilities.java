@@ -634,7 +634,7 @@ public class Utilities
     {
         if (Utilities.isChromebook(context))
             return false;
-        
+
         Configuration configuration = context.getResources().getConfiguration();
 
         // The current width of the available screen space, in dp units,
@@ -1305,7 +1305,7 @@ public class Utilities
     // ISO8601 date time string to Date
     public static Date iso8601ToDate(String iso8601)
     {
-        String str = iso8601.replace("[Zz]", "+00:00");
+        String str = iso8601.replaceFirst("[Zz]", "+00:00");
         try
         {
             str = str.substring(0, 22) + str.substring(23); // remove ':'
