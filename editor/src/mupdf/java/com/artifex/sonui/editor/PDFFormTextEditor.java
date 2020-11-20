@@ -41,6 +41,7 @@ public class PDFFormTextEditor extends PDFFormEditor
     private boolean mDragging = false;
     private TextWatcher mWatcher = null;
     private boolean messageDisplayed = false;
+    private boolean scrollIntoViewRequested = false;
 
     public PDFFormTextEditor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -338,6 +339,12 @@ public class PDFFormTextEditor extends PDFFormEditor
 
     @Override
     protected void scrollIntoView()
+    {
+        //  defer this until text rects are available
+        scrollIntoViewRequested = true;
+    }
+
+    private void scrollIntoViewInternal()
     {
         if (mSelStart == mSelEnd)
             scrollCaretIntoView();
@@ -648,6 +655,13 @@ public class PDFFormTextEditor extends PDFFormEditor
                         setEditTextSelection(selStart, selStart);
                     }
                 }
+
+                //  scroll ourselves into view if requested
+                //  text rects are available, sso crolling the caret
+                //  into view will work correctly.
+                if (scrollIntoViewRequested)
+                    scrollIntoViewInternal();
+                scrollIntoViewRequested = false;
             }
         });
     }
