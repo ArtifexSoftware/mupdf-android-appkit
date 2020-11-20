@@ -363,7 +363,9 @@ public class PDFFormTextEditor extends PDFFormEditor
                 break;
 
             case MuPDFWidget.CONTENT_NUMBER:
-                inputType = InputType.TYPE_CLASS_NUMBER;
+                inputType = InputType.TYPE_CLASS_NUMBER
+                        |InputType.TYPE_NUMBER_FLAG_DECIMAL
+                        |InputType.TYPE_NUMBER_FLAG_SIGNED;
                 break;
 
             case MuPDFWidget.CONTENT_DATE:
