@@ -25,6 +25,7 @@
         android:id="@+id/message"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/sodk_editor_sigdlg_text"
+        android:gravity="center_horizontal"
         android:text="@string/sodk_editor_signature_message_short"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
