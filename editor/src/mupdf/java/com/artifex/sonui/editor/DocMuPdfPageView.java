@@ -929,16 +929,19 @@ public class DocMuPdfPageView extends DocPdfPageView
     @Override
     public boolean dispatchTouchEvent(MotionEvent event)
     {
-        //  see if the active editor wants to handle this event
-        if (mFormEditor !=null) {
-            if (mFormEditor.dispatchTouchEvent(event)) {
-                return true;
+        if (getDocView() instanceof DocPdfView)
+        {
+            //  see if the active editor wants to handle this event
+            if (mFormEditor != null) {
+                if (mFormEditor.dispatchTouchEvent(event)) {
+                    return true;
+                }
             }
-        }
 
-        stopPreviousEditor();
-        mEditingWidget = null;
-        mEditingWidgetIndex = -1;
+            stopPreviousEditor();
+            mEditingWidget = null;
+            mEditingWidgetIndex = -1;
+        }
 
         return super.dispatchTouchEvent(event);
     }
