@@ -16,8 +16,8 @@ import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 
 public class ListWheelDialog
 {
-    private static boolean buttonDismissed = false;
-    public static boolean wasDismissedWithButton() {return buttonDismissed;}
+    private AlertDialog dialog = null;
+    private boolean finished = false;
 
     //  callers should supply one of these
     interface ListWheelDialogListener
@@ -26,7 +26,7 @@ public class ListWheelDialog
         void cancel();
     }
 
-    public static void show(Context context, final String[] values, String currentValue, final ListWheelDialogListener listener)
+    public void show(Context context, final String[] values, String currentValue, final ListWheelDialogListener listener)
     {
         //  get the layout
         final View layout = View.inflate(context, R.layout.sodk_editor_wheel_chooser_dialog, null);
@@ -54,17 +54,15 @@ public class ListWheelDialog
             wheel.setCurrentItem(currentIndex);
 
         //  create the dialog
-        final AlertDialog dialog = new AlertDialog.Builder(context)
+        dialog = new AlertDialog.Builder(context)
                 .setView(layout)
                 .create();
-
-        buttonDismissed = false;
 
         //  cancel button
         layout.findViewById(R.id.sodk_editor_cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonDismissed = true;
+                finished = true;
                 dialog.dismiss();
                 listener.cancel();
             }
@@ -74,7 +72,7 @@ public class ListWheelDialog
         layout.findViewById(R.id.sodk_editor_update_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonDismissed = true;
+                finished = true;
                 dialog.dismiss();
                 listener.update(values[wheel.getCurrentItem()]);
             }
@@ -88,7 +86,9 @@ public class ListWheelDialog
                 {
                     if (keyCode==KeyEvent.KEYCODE_TAB || keyCode==KeyEvent.KEYCODE_ENTER )
                     {
+                        finished = true;
                         dialog.dismiss();
+                        listener.update(values[wheel.getCurrentItem()]);
                     }
                 }
                 return true;
@@ -98,7 +98,8 @@ public class ListWheelDialog
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                listener.cancel();
+                if (!finished)
+                    listener.cancel();
             }
         });
 

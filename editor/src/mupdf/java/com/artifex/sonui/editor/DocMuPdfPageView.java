@@ -154,7 +154,7 @@ public class DocMuPdfPageView extends DocPdfPageView
                 {
                     for (int i = 0; i< mFormFields.length; i++)
                     {
-                        if (!mFormFields[i].equals(mEditingWidget))
+                        if (mEditingWidget==null || !mFormFields[i].equals(mEditingWidget))
                         {
                             Rect wr = mFormFieldBounds[i];
                             mHighlightingRect.set(wr);
@@ -595,29 +595,24 @@ public class DocMuPdfPageView extends DocPdfPageView
         String currentVal = widget.getValue();
         if (options!=null && options.length>0)
         {
-            ListWheelDialog.show(getContext(), options, currentVal, new ListWheelDialog.ListWheelDialogListener() {
+            ListWheelDialog dlg = new ListWheelDialog();
+            dlg.show(getContext(), options, currentVal, new ListWheelDialog.ListWheelDialogListener() {
                 @Override
                 public void update(String val) {
                     widget.setValue(val);
                     ((MuPDFDoc)getDoc()).update(getPageNumber());
                     invalidate();
-                    if (!ListWheelDialog.wasDismissedWithButton())
-                    {
-                        boolean stopped = stopPreviousEditor();
-                        if (stopped)
-                            nextWidget();
-                    }
+                    boolean stopped = stopPreviousEditor();
+                    if (stopped)
+                        nextWidget();
                 }
 
                 @Override
                 public void cancel() {
+                    stopPreviousEditor();
+                    mEditingWidget = null;
+                    mEditingWidgetIndex = -1;
                     invalidate();
-                    if (!ListWheelDialog.wasDismissedWithButton())
-                    {
-                        boolean stopped = stopPreviousEditor();
-                        if (stopped)
-                            nextWidget();
-                    }
                 }
             });
             if (isKeyboardvisible())
