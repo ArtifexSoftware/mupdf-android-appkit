@@ -1141,6 +1141,7 @@ public class NUIDocView
                         {
                             //  loading was cancelled
                             endProgress();
+                            disableUI();
                         }
 
                         @Override
