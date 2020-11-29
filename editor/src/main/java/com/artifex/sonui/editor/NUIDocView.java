@@ -5753,7 +5753,7 @@ public class NUIDocView
              * The temporary file will be saved using the SecureFS API's for
              * secure builds.
              */
-            new PrintHelperPdf().print(getContext(), getDoc());
+            new PrintHelperPdf().print(getContext(), getDoc(), null);
         }
         else
         {
