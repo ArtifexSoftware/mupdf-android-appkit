@@ -375,7 +375,7 @@ public class NUIDocView
     //  this function recursively enables or disables our view and its children,
     //  except for the soft Back button.
     //  it's called when the document fails to load.
-    private void setViewAndChildrenEnabled(View view, boolean enabled)
+    protected void setViewAndChildrenEnabled(View view, boolean enabled)
     {
         view.setEnabled(enabled);
         if (view instanceof ViewGroup)
