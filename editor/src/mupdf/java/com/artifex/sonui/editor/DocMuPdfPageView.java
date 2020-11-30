@@ -244,12 +244,17 @@ public class DocMuPdfPageView extends DocPdfPageView
 
         //  collect up the form fields and their bounds.
         mFormFields = page.findFormFields();
+
+        //  set the initial number of form fields for this page
+        if (numInitialFormFields==-1) {
+            if (mFormFields!=null)
+                numInitialFormFields = mFormFields.length;
+            else
+                numInitialFormFields = 0;
+        }
+
         if (mFormFields !=null && mFormFields.length>0)
         {
-            //  set the initial number of form fields for this page
-            if (numInitialFormFields==-1)
-                numInitialFormFields = mFormFields.length;
-
             mFormFieldBounds = new Rect[mFormFields.length];
             int i=0;
             for (MuPDFWidget mw : mFormFields)
