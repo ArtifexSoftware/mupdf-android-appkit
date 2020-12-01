@@ -353,7 +353,10 @@ public class DocPdfView extends DocView
             ArDkSelectionLimits limits = getSelectionLimits();
             mNoteEditor.show(limits, mSelectionStartPage);
             mNoteEditor.move();
-            mNoteEditor.setCommentEditable(true);
+            if (mDocCfgOptions!=null && mDocCfgOptions.isPDFAnnotationEnabled())
+                mNoteEditor.setCommentEditable(true);
+            else
+                mNoteEditor.setCommentEditable(false);
             requestLayout();
         }
         else
