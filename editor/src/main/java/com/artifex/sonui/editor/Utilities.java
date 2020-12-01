@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
@@ -1388,4 +1389,43 @@ public class Utilities
         }
     }
 
+    public static ProgressDialog showWaitDialog(Context context, String message, boolean allowBack)
+    {
+        //  display a "please wait" progress dialog
+        ProgressDialog dialog = new ProgressDialog(context, R.style.sodk_editor_alert_dialog_style);
+        dialog.setMessage(message);
+        dialog.setCancelable(false);
+        dialog.setIndeterminate(true);
+
+        if (allowBack) {
+            //  make sure that the progress dialog does not gain focus, so loading
+            //  can be aborted using the back button. (Alan S.)
+            Window window = dialog.getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        }
+
+        dialog.show();
+
+        return dialog;
+    }
+
+    public static void hideWaitDialog(ProgressDialog dialog)
+    {
+        if (dialog != null) {
+            try {
+                dialog.dismiss();
+            }
+            catch (IllegalArgumentException e ) {
+                /*
+                 * It is possible, most notably when quickly toggling
+                 * between day/night mode, for the dialog to be
+                 * disconnected from the window.
+                 *
+                 * We catch that exception here.
+                 */
+            }
+        }
+    }
 }

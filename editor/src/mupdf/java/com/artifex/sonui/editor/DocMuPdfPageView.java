@@ -991,6 +991,10 @@ public class DocMuPdfPageView extends DocPdfPageView
             ((DocPdfView)getDocView()).mPausedEditorIndex = mEditingWidgetIndex;
             ((DocPdfView)getDocView()).mPausedPageIndex = getPageNumber();
             ((DocPdfView)getDocView()).mPausedEditorValue = mFormEditor.getValue();
+
+            //  leave the form field blank while we're paused.
+            //  it will get filled again upon resume.
+            mFormEditor.setNewValue("");
         }
 
         //  cancel any form editing
