@@ -103,7 +103,7 @@ public class NUIDocView
     private SOFileState mFileState;
     private SOFileDatabase mFileDatabase;
     private ProgressDialog mProgressDialog;
-    private boolean mProgressStarted = false;
+    private ProgressDialog mWaitDialog = null;
     protected int mPageCount;
     private DocView mDocView;
     private DocListPagesView mDocPageListView;
@@ -2248,48 +2248,17 @@ public class NUIDocView
     }
 
     private void startProgress() {
-
         //  this is only used once.
-        if (mProgressStarted)
+        if (mProgressDialog!=null)
             return;
-        mProgressStarted = true;
-
-        //  display a progress dialog
-        mProgressDialog = new ProgressDialog(getContext(),
-                                    R.style.sodk_editor_alert_dialog_style );
-        mProgressDialog.setMessage(getContext().getString(R.string.sodk_editor_loading_please_wait));
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setIndeterminate(true);
-
-        //  make sure that the progress dialog does not gain focus, so loading
-        //  can be aborted using the back button. (Alan S.)
-        Window window = mProgressDialog.getWindow();
-        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-        mProgressDialog.show();
+        mProgressDialog = Utilities.showWaitDialog(getContext(),
+                getContext().getString(R.string.sodk_editor_loading_please_wait), true);
     }
 
     private void endProgress() {
-
         //  remove the progress dialog
-        if (mProgressDialog != null) {
-            try {
-                mProgressDialog.dismiss();
-            } catch (IllegalArgumentException e ) {
-                /*
-                 * It is possible, most notably when quickly toggling
-                 * between day/night mode, for the dialog to be
-                 * disconnected from the window.
-                 *
-                 * We catch that exception here.
-                 */
-            } finally {
-                mProgressDialog = null;
-            }
-        }
-        mProgressStarted = true;
+        Utilities.hideWaitDialog(mProgressDialog);
+        mProgressDialog = null;
     }
 
     public void onUndoButton(final View v) { doUndo();}
@@ -4355,19 +4324,30 @@ public class NUIDocView
         resetInputView();
     }
 
+    //  this is set to true while pausing is underway.
+    private boolean pausing = false;
+
     public void onPause(final Runnable whenDone)
     {
+        //  don't do this again.
+        if (pausing)
+            return;
+        //  we're pausing now.
+        pausing = true;
+
         onPauseCommon();
 
         //  not if we've been finished
         if (mDocView!=null && mDocView.finished()) {
             whenDone.run();
+            pausing = false;  //  done pausing
             return;
         }
 
         //  not if we've not been opened
         if (mFileState == null || mDocView == null || mDocView.getDoc()==null) {
             whenDone.run();
+            pausing = false;  //  done pausing
             return;
         }
 
@@ -4379,12 +4359,14 @@ public class NUIDocView
                 @Override
                 public void run() {
                     whenDone.run();
+                    pausing = false;  //  done pausing
                 }
             });
         }
         else
         {
             whenDone.run();
+            pausing = false;  //  done pausing
         }
     }
 
@@ -4464,6 +4446,32 @@ public class NUIDocView
 
     public void onResume()
     {
+        if (pausing)
+        {
+            //  Sometimes a user can cause a pause to be too quickly followed by resume.
+            //  if that's the case we'll wait until pausing is complete before resuming.
+
+            //  Display a wait dialog
+            if (mWaitDialog==null)
+                mWaitDialog = Utilities.showWaitDialog(getContext(),
+                        getContext().getString(R.string.sodk_editor_please_wait), false);
+
+            //  try this again in the near future
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onResume();
+                }
+            }, 50);
+            return;
+        }
+
+        //  we're done waiting
+        if (mWaitDialog!=null) {
+            Utilities.hideWaitDialog(mWaitDialog);
+            mWaitDialog = null;
+        }
+
         onResumeCommon();
 
         //  when we resume, the keyboard will not be showing.

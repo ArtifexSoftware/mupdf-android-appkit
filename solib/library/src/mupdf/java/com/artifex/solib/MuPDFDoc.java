@@ -60,6 +60,13 @@ public class MuPDFDoc extends ArDkDoc
         }
     };
 
+    public PDFDocument.JsEventListener jsNullEventListener = new PDFDocument.JsEventListener() {
+        @Override
+        public void onAlert(String message)
+        {
+        }
+    };
+
     MuPDFDoc(Looper looper, SODocLoadListener listener, Context context, ConfigOptions cfg)
     {
         mListener = listener;
@@ -1247,6 +1254,9 @@ public class MuPDFDoc extends ArDkDoc
 
             public void work()
             {
+                //  disable Javascript for the old doc
+                disableJavascript(mDocument);
+
                 //  this part takes place on the background thread
                 //  here we load the file and make a new page list.
                 //  we'll make them active on the foreground thread
@@ -1273,6 +1283,11 @@ public class MuPDFDoc extends ArDkDoc
                     }
                     newPages.add(mpage);
                 }
+
+                //  re-enable javascript for the new doc
+                if (mDocCfgOpts.isFormFillingEnabled()) {
+                    enableJavascript(newDoc);
+                }
             }
 
             public void run()
@@ -1282,9 +1297,6 @@ public class MuPDFDoc extends ArDkDoc
                 //  replace the page list
                 ArrayList<MuPDFPage> oldPages = mPages;
                 mPages = newPages;
-
-                //  disable Javascript for the old doc
-                disableJavascript(mDocument);
 
                 //  replace the Document
                 Document oldDoc = mDocument;
@@ -1302,11 +1314,6 @@ public class MuPDFDoc extends ArDkDoc
 
                 //  destroy the now-unreferenced Document
                 oldDoc.destroy();
-
-                //  re-enable javascript for the new doc
-                if (mDocCfgOpts.isFormFillingEnabled()) {
-                    enableJavascript(mDocument);
-                }
 
                 //  tell someone
                 listener.onReload();
@@ -1327,6 +1334,7 @@ public class MuPDFDoc extends ArDkDoc
     {
         PDFDocument pdfDoc = MuPDFDoc.getPDFDocument(doc);
         if (pdfDoc != null) {
+            pdfDoc.setJsEventListener(jsNullEventListener);
             pdfDoc.disableJs();
         }
     }
