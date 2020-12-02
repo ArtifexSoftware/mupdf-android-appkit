@@ -22,6 +22,7 @@ import com.artifex.solib.ArDkDoc;
 import com.artifex.solib.ArDkLib;
 import com.artifex.solib.ArDkSelectionLimits;
 import com.artifex.solib.ConfigOptions;
+import com.artifex.solib.SODoc;
 import com.artifex.solib.SOHyperlink;
 import com.artifex.solib.ArDkPage;
 import com.artifex.solib.SOPageListener;
@@ -819,7 +820,9 @@ public class DocPageView extends View implements SOPageListener
 
         if (canEditText)
         {
-            getDoc().clearSelection();
+            SODoc doc = (SODoc)getDoc();
+            if ( !doc.selectionIsAutoshapeOrImage() )
+                doc.clearSelection();
             mPage.select(ArDkPage.SOSelectMode_Caret, pPage.x, pPage.y);
         }
 
