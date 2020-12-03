@@ -162,4 +162,12 @@ public class SOTextView extends FrameLayout {
         if (mTextView!=null)
             mTextView.setVisibility(visibility);
     }
+
+    public void setEnabled(boolean val)
+    {
+        super.setEnabled(val);
+        if (mTextView!=null)
+            mTextView.setEnabled(val);
+
+    }
 }
