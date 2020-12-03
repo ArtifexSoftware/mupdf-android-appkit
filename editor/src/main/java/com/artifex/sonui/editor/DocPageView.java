@@ -850,7 +850,9 @@ public class DocPageView extends View implements SOPageListener
     public void onDoubleTap(int x, int y)
     {
         Point p = screenToPage(x, y);
-        mPage.select(ArDkPage.SOSelectMode_DefaultUnit, p.x, p.y);
+        SODoc doc = (SODoc)getDoc();
+        if ( !doc.selectionIsAutoshapeOrImage() )
+            mPage.select(ArDkPage.SOSelectMode_DefaultUnit, p.x, p.y);
         NUIDocView.currentNUIDocView().showUI(true);
     }
 
