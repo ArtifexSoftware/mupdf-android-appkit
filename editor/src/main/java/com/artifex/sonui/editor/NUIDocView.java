@@ -104,6 +104,7 @@ public class NUIDocView
     private SOFileDatabase mFileDatabase;
     private ProgressDialog mProgressDialog;
     private ProgressDialog mWaitDialog = null;
+    private boolean mProgressStarted = false;
     protected int mPageCount;
     private DocView mDocView;
     private DocListPagesView mDocPageListView;
@@ -2248,9 +2249,12 @@ public class NUIDocView
     }
 
     private void startProgress() {
+
         //  this is only used once.
-        if (mProgressDialog!=null)
+        if (mProgressStarted)
             return;
+        mProgressStarted = true;
+
         mProgressDialog = Utilities.showWaitDialog(getContext(),
                 getContext().getString(R.string.sodk_editor_loading_please_wait), true);
     }
