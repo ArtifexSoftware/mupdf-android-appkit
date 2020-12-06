@@ -4849,13 +4849,13 @@ public class NUIDocView
                 pagesView.onShowKeyboard(bShow);
         }
 
-        //  delay the rest so the layout can settle first
-        final ViewTreeObserver observer = getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        //  delay a bit so the layout can settle first
+        //  using OnGlobalLayoutListener seems to fast and is causing
+        //  https://bugs.ghostscript.com/show_bug.cgi?id=703222
+        //  so we're switching back to waiting 250 msec.
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onGlobalLayout() {
-                observer.removeOnGlobalLayoutListener(this);
-
+            public void run() {
                 //  tell the doc view about the keyboard change
                 DocView docview = getDocView();
                 if (docview != null)
@@ -4870,7 +4870,7 @@ public class NUIDocView
 
                 layoutNow();
             }
-        });
+        }, 250);
     }
 
     public void showUI(final boolean bShow)
