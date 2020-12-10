@@ -32,17 +32,20 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.ActionMode;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -310,6 +313,12 @@ public class NUIDocView
         mDecorView.getWindowVisibleDisplayFrame(windowVisibleDisplayFrame);
         keyboardHeight = decorViewHeight - windowVisibleDisplayFrame.bottom;
 
+        /*
+         * Allow for the potential of cutout areas at the top/bottom
+         * of the screen, (used for notches).
+         */
+        keyboardHeight += getCutoutHeightForRotation();
+
         //  adjust keyboard height by the height of the soft nav bar.
         //  This became necessary after the switch to AppCompatActivity
         //  Without this adjustment, we judge the keyboard to be larger than it is,
@@ -342,6 +351,200 @@ public class NUIDocView
         }
     }
 
+    /*
+     * Return the cutout height adjustment taking into account
+     * the top and bottom edges.
+     */
+    private int getCutoutHeightForRotation()
+    {
+        // There can be no cutouts on the long edges of the device.
+        Point p = Utilities.getRealScreenSize(activity());
+        if (p.x > p.y)
+        {
+            return 0;
+        }
+
+        // Obtain the current rotation
+        Display display = ((WindowManager)activity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int screenRotation = display.getRotation();
+
+        /*
+         * Calculate the cutout height for the current rotation.
+         */
+        switch (screenRotation)
+        {
+            case Surface.ROTATION_0:
+            {
+                // Height of the cutout at the top of the screen.
+                int height = cutoutHeights[TOP_CUTOUT];
+
+                // Is bottom cutout present ?
+                if (cutoutHeights[BOTTOM_CUTOUT] != 0)
+                {
+                    /*
+                     * For an unknown reason we need to apply a fudge
+                     * factor to decrease the calculated keyboard height
+                     * to avoid blank space between the keyboard and
+                     * document view.
+                     */
+                    height -= (findViewById(R.id.footer).getHeight() * 0.9f);
+                }
+
+                return height;
+            }
+            case Surface.ROTATION_90:
+            {
+                // Height of the cutout at the top of the screen.
+                int height = cutoutHeights[RIGHT_CUTOUT];
+
+                // Is bottom cutout present ?
+                if (cutoutHeights[LEFT_CUTOUT] != 0)
+                {
+                    /*
+                     * For an unknown reason we need to apply a fudge
+                     * factor to decrease the calculated keyboard height
+                     * to avoid blank space between the keyboard and
+                     * document view.
+                     */
+                    height -= (findViewById(R.id.footer).getHeight() * 0.9f);
+                }
+
+                return height;
+            }
+            case Surface.ROTATION_180:
+            {
+                // Height of the cutout at the top of the screen.
+                int height = cutoutHeights[BOTTOM_CUTOUT];
+
+                // Is bottom cutout present ?
+                if (cutoutHeights[TOP_CUTOUT] != 0)
+                {
+                    /*
+                     * For an unknown reason we need to apply a fudge
+                     * factor to decrease the calculated keyboard height
+                     * to avoid blank space between the keyboard and
+                     * document view.
+                     */
+                    height -= (findViewById(R.id.footer).getHeight() * 0.9f);
+                }
+
+                return height;
+            }
+            case Surface.ROTATION_270:
+            {
+                // Height of the cutout at the top of the screen.
+                int height = cutoutHeights[LEFT_CUTOUT];
+
+                // Is bottom cutout present ?
+                if (cutoutHeights[RIGHT_CUTOUT] != 0)
+                {
+                    /*
+                     * For an unknown reason we need to apply a fudge
+                     * factor to decrease the calculated keyboard height
+                     * to avoid blank space between the keyboard and
+                     * document view.
+                     */
+                    height -= (findViewById(R.id.footer).getHeight() * 0.9f);
+                }
+
+                return height;
+            }
+
+            default:
+                return 0;
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+
+        /*
+         * Store the cutout heights for each edge for future use when
+         * the keyboard is shown.
+         *
+         * The display edges vary with the current rotation ie. the top
+         * edge at 0 degrees rotation is the left edge st 90 degrees
+         * rotation.
+         *
+         * To keep things simple we store the edge values as per a
+         * natural 0 degrees rotation.
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        {
+            try {
+                Display display = ((WindowManager)activity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+                int screenRotation = display.getRotation();
+                WindowInsets wi =
+                    activity().getWindow().getDecorView().getRootWindowInsets();
+
+                switch (screenRotation)
+                {
+                    case Surface.ROTATION_0:
+                    {
+                        cutoutHeights[TOP_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetTop();
+                        cutoutHeights[LEFT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetLeft();
+                        cutoutHeights[BOTTOM_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetBottom();
+                        cutoutHeights[RIGHT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetRight();
+
+                        break;
+                    }
+                    case Surface.ROTATION_90:
+                    {
+                        cutoutHeights[TOP_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetLeft();
+                        cutoutHeights[LEFT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetBottom();
+                        cutoutHeights[BOTTOM_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetRight();
+                        cutoutHeights[RIGHT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetTop();
+
+                        break;
+                    }
+                    case Surface.ROTATION_180:
+                    {
+                        cutoutHeights[TOP_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetBottom();
+                        cutoutHeights[LEFT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetRight();
+                        cutoutHeights[BOTTOM_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetTop();
+                        cutoutHeights[RIGHT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetLeft();
+
+                        break;
+                    }
+                    case Surface.ROTATION_270:
+                    {
+                        cutoutHeights[TOP_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetRight();
+                        cutoutHeights[LEFT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetTop();
+                        cutoutHeights[BOTTOM_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetLeft();
+                        cutoutHeights[RIGHT_CUTOUT] =
+                            wi.getDisplayCutout().getSafeInsetBottom();
+
+                        break;
+                    }
+                }
+            }
+            catch (NullPointerException e)
+            {
+                /*
+                 * If there was a null returned anywhere in the chain
+                 * there is no cutout to account for.
+                 */
+            }
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
@@ -364,6 +567,14 @@ public class NUIDocView
         // Store the initial keyboard type.
         mPrevKeyboard = context.getResources().getConfiguration().keyboard;
     }
+
+    private final static int TOP_CUTOUT    = 0;
+    private final static int RIGHT_CUTOUT  = 1;
+    private final static int BOTTOM_CUTOUT = 2;
+    private final static int LEFT_CUTOUT   = 3;
+
+    private int cutoutHeights[]  = { 0,0,0,0 };
+    private int originalRotation = Surface.ROTATION_0;
 
     private int keyboardHeight = 0;
     public int getKeyboardHeight() {return keyboardHeight;}
