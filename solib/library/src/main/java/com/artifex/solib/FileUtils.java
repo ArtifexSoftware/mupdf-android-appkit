@@ -705,7 +705,16 @@ public class FileUtils
 
             //  if that's null, use the one we're given as a fallback.
             if (type==null)
-                type = mimeFallback;
+            {
+                if (mimeFallback != null)
+                {
+                    type = mimeFallback;
+                }
+                else
+                {
+                    type = "";
+                }
+            }
 
             if (type.equalsIgnoreCase("application/vnd.ms-xpsdocument") ||
                     type.equalsIgnoreCase("application/oxps"))
