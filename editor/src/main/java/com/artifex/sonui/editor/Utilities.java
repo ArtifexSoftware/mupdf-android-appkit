@@ -58,7 +58,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import com.artifex.solib.SOBitmap;
+import com.artifex.solib.ArDkBitmap;
 import com.artifex.solib.SODoc;
 import com.artifex.solib.SOInputStream;
 import com.artifex.solib.SOOutputStream;
@@ -1088,7 +1088,7 @@ public class Utilities
             inStream = new SOInputStream(path);
             try {
                 BitmapFactory.Options option = new BitmapFactory.Options();
-                option.inPreferredConfig = SOBitmap.defaultConfig();
+                option.inPreferredConfig = ArDkBitmap.defaultConfig();
                 src = BitmapFactory.decodeStream(inStream);
             }
             catch (Exception e) {
