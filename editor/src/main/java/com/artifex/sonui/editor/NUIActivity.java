@@ -255,7 +255,16 @@ public class NUIActivity extends BaseActivity
                     if (pageNum>=1 && !thumbnailCreated && createThumbnail)
                     {
                         thumbnailCreated = true;
-                        SOFileState state = SOFileDatabase.getDatabase().stateForPath(session.getUserPath(), false);
+
+                        SOFileState    state = null;
+                        SOFileDatabase db    = SOFileDatabase.getDatabase();
+
+                        if (db != null)
+                        {
+                            state =
+                                db.stateForPath(session.getUserPath(), false);
+                        }
+
                         if (state != null)
                             session.createThumbnail(state);
                     }
