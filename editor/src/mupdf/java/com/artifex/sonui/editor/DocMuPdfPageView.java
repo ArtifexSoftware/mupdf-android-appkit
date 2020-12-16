@@ -320,8 +320,13 @@ public class DocMuPdfPageView extends DocPdfPageView
     {
         //  mFormEditor might be on another page view.
         //  so we reference it through that page view.
+        DocMuPdfPageView mFormEditorPage = null;
+        DocPdfView       dv = (DocPdfView)getDocView();
 
-        DocMuPdfPageView mFormEditorPage = ((DocPdfView)getDocView()).mFormEditorPage;
+        if (dv != null)
+        {
+            mFormEditorPage = dv.mFormEditorPage;
+        }
 
         if (mFormEditorPage !=null && mFormEditorPage.mFormEditor != null)
         {
