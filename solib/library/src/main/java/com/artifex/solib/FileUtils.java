@@ -675,6 +675,11 @@ public class FileUtils
     {
         String extension = "";
 
+        if (uri == null)
+        {
+            return extension;
+        }
+
         String filename = new File(uri.getPath()).getName();
         int i = filename.lastIndexOf('.');
         if (i>0)
@@ -693,7 +698,7 @@ public class FileUtils
         String extension = "";
 
         //  Check uri format to avoid null
-        String scheme = uri.getScheme();
+        String scheme = (uri != null) ? uri.getScheme() : null;
         if (scheme!=null &&
             scheme.equalsIgnoreCase(ContentResolver.SCHEME_CONTENT))
         {
