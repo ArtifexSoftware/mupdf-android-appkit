@@ -731,7 +731,7 @@ public class FileUtils
             {
                 //  some apps use this generic mime type.
                 //  we can try to get the extension a different way
-                String name = FileUtils.fileNameFromUri(context, uri);
+                String name = displayNameFromUri(context, uri);
                 if (name!=null)
                     extension = FileUtils.getExtension(name);
             }
@@ -763,12 +763,9 @@ public class FileUtils
         return extension;
     }
 
-    private static String fileNameFromUri(Context context, Uri uri)
+    private static String displayNameFromUri(Context context, Uri uri)
     {
         String scheme    = uri.getScheme();
-        String path      = uri.getPath();
-        String fullPath  = uri.toString();
-        String fileName  = "file";;
 
         if (scheme != null &&
             scheme.equalsIgnoreCase(ContentResolver.SCHEME_CONTENT))
@@ -791,10 +788,29 @@ public class FileUtils
                         cursor.close();
                     }
                 }
+
+                return displayName;
             }
             catch (Exception e)
             {
+                return null;
             }
+        }
+
+        return null;
+    }
+
+    private static String fileNameFromUri(Context context, Uri uri)
+    {
+        String scheme    = uri.getScheme();
+        String path      = uri.getPath();
+        String fullPath  = uri.toString();
+        String fileName  = "file";
+
+        if (scheme != null &&
+            scheme.equalsIgnoreCase(ContentResolver.SCHEME_CONTENT))
+        {
+            String displayName = displayNameFromUri(context, uri);
 
             /*If we can't get a display name, then make one up*/
             if (displayName == null)
