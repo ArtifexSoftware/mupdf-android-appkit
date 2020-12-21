@@ -2475,6 +2475,7 @@ public class NUIDocView
         //  remove the progress dialog
         Utilities.hideWaitDialog(mProgressDialog);
         mProgressDialog = null;
+        mProgressStarted = true;
     }
 
     public void onUndoButton(final View v) { doUndo();}
