@@ -164,50 +164,10 @@ public class DocEditorActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPause() {
-        if (mDocumentView != null)
-            mDocumentView.onPause(new Runnable() {
-                @Override
-                public void run() {
-                    //  called when pausing is complete
-                }
-            });
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mDocumentView != null)
-            mDocumentView.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mDocumentView != null)
-            mDocumentView.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDocumentView != null)
-            mDocumentView.onBackPressed();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mDocumentView != null)
             mDocumentView.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (mDocumentView != null)
-            mDocumentView.onConfigurationChange(newConfig);
     }
 
     private void setupUI() {

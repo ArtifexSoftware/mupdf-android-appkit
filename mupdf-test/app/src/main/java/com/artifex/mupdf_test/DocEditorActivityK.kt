@@ -175,47 +175,6 @@ class DocEditorActivityK : AppCompatActivity() {
         }
     }
 
-    public override fun onPause() {
-        // Work on a constant copy of mDocumentView
-        val documentViewCopy = mDocumentView
-
-        documentViewCopy?.let { _ -> 
-            //  called when pausing is complete
-        }
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Work on a constant copy of mDocumentView
-        val documentView = mDocumentView
-
-        documentView?.let { dv -> 
-            dv.onResume()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        // Work on a constant copy of mDocumentView
-        val documentView = mDocumentView
-
-        documentView?.let { dv -> 
-            dv.onDestroy()
-        }
-    }
-
-    override fun onBackPressed() {
-        // Work on a constant copy of mDocumentView
-        val documentView = mDocumentView
-
-        documentView?.let { dv -> 
-            dv.onBackPressed()
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // Work on a constant copy of mDocumentView
         val documentView = mDocumentView
@@ -225,17 +184,6 @@ class DocEditorActivityK : AppCompatActivity() {
         }
 
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        // Work on a constant copy of mDocumentView
-        val documentView = mDocumentView
-
-        documentView?.let { dv -> 
-            dv.onConfigurationChange(newConfig)
-        }
     }
 
     private fun setupUI() {
