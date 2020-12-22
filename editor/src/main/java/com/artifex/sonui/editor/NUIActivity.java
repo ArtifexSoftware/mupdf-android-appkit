@@ -158,6 +158,7 @@ public class NUIActivity extends BaseActivity
                                 mNUIView.endDocSession(true);
 
                             // Load the new document.
+                            setIntent(intent);
                             start(intent, true);
                         }
                     },
@@ -193,6 +194,7 @@ public class NUIActivity extends BaseActivity
              * The current doc is not modified, so we'll go with the new doc
              * without asking.
              */
+            setIntent(intent);
             start(intent, true);
         }
     }
