@@ -4538,6 +4538,9 @@ public class NUIDocView
         if (mDocView!=null)
             mDocView.pauseChildren();
 
+        //  keep track of the current view
+        mCurrentNUIDocView = this;
+
         saveState();
 
         mIsActivityActive = false;
