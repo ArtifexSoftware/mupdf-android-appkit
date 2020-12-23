@@ -4512,7 +4512,12 @@ public class NUIDocView
         {
             try
             {
-                mDataLeakHandlers.printHandler(mSession.getDoc());
+                ArDkDoc doc = getDoc();
+
+                if (doc != null)
+                {
+                    mDataLeakHandlers.printHandler(doc);
+                }
 
                 return;
             }
