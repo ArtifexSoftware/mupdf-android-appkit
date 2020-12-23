@@ -151,6 +151,7 @@
     <string name="sodk_editor_print_upper">PRINT</string>
     <string name="sodk_editor_printing_not_supported_body">Printing is not supported for this version of Andriod.</string>
     <string name="sodk_editor_printing_not_supported_title">Not Supported</string>
+    <string name="sodk_editor_print_password_protected_pdf">Printing is not supported for password protected Pdf files.</string>
     <string name="sodk_editor_protect_upper">PROTECT</string>
     <string name="sodk_editor_recent_documents">Recent Documents</string>
     <string name="sodk_editor_recent">Recent</string>
