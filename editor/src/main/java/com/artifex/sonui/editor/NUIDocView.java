@@ -4544,6 +4544,10 @@ public class NUIDocView
         mIsActivityActive = false;
 
         resetInputView();
+
+        //  restore the view to its original size,
+        //  since the keyboard gets hidden when pausing.
+        onShowKeyboardPreventPush(false);
     }
 
     //  this is set to true while pausing is underway.
