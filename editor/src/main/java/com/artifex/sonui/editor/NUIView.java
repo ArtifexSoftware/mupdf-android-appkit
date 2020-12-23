@@ -115,12 +115,12 @@ public class NUIView extends FrameLayout
         mDocView.start(uri, template, viewingState, customDocData, mDoneListener, true);
     }
 
-    public void onDestroy()
+    protected void onDestroy()
     {
         mDocView.onDestroy();
     }
 
-    public void onPause(final Runnable whenDone)
+    protected void onPause(final Runnable whenDone)
     {
         if (mDocView != null) {
             mDocView.onPause(new Runnable() {
@@ -145,13 +145,13 @@ public class NUIView extends FrameLayout
             mDocView.releaseBitmaps();
     }
 
-    public void onResume()
+    protected void onResume()
     {
         if (mDocView != null)
             mDocView.onResume();
     }
 
-    public void onBackPressed()
+    protected void onBackPressed()
     {
         if (mDocView != null)
             mDocView.onBackPressed();
@@ -178,7 +178,7 @@ public class NUIView extends FrameLayout
         return false;
     }
 
-    public void onConfigurationChange(Configuration newConfig)
+    protected void onConfigurationChange(Configuration newConfig)
     {
         //  config was changed, probably orientation.
         //  call the doc view
