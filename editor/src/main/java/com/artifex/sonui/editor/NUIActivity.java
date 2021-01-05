@@ -12,6 +12,7 @@ import com.artifex.solib.ArDkUtils;
 import com.artifex.solib.ConfigOptions;
 
 import java.lang.Class;
+import java.lang.IllegalArgumentException;
 import java.lang.reflect.Constructor;
 
 public class NUIActivity extends BaseActivity
@@ -207,6 +208,21 @@ public class NUIActivity extends BaseActivity
 
     private void start(Intent intent, boolean newIntent)
     {
+        /*
+         * Firebase has caught a number of crashes, on older Androids,
+         * when attempting to obtain the extras bundle.
+         *
+         * Test for OS internal exception here.
+         */
+        try
+        {
+            Bundle extras = intent.getExtras();
+        }
+        catch(IllegalArgumentException e)
+        {
+            finish();
+        }
+
         final Bundle extras = intent.getExtras();
         boolean createSession = false;
 
