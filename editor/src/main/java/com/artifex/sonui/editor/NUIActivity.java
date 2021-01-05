@@ -399,7 +399,19 @@ public class NUIActivity extends BaseActivity
             } else {
                 if (createSession && session != null) {
                     //  NUI's Explorer
-                    mViewingState = new ViewingState(SOFileDatabase.getDatabase().stateForPath(session.getUserPath(), isTemplate));
+                    SOFileDatabase db = SOFileDatabase.getDatabase();
+                    if (db != null) {
+                        mViewingState = new ViewingState(db.stateForPath(session.getUserPath(), isTemplate));
+                    } else {
+                        /*
+                         * The SOFileDatabase should not be null at this
+                         * point, but crash reports suggest that it is.
+                         *
+                         * In that case proceed with a newly created
+                         * view state.
+                         */
+                        mViewingState = new ViewingState(0);
+                    }
                 } else {
                     //  open with
                     mViewingState = new ViewingState(0);
