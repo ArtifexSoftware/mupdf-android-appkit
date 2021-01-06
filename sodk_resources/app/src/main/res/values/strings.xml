@@ -62,6 +62,7 @@
     <string name="sodk_editor_error_copying_from_remote">Error copying from remote.</string>
     <string name="sodk_editor_error_opening_from_other_app">Error opening document sent from another app</string>
     <string name="sodk_editor_error_opening">"Error opening "</string>
+    <string name="sodk_editor_error_opening_doc">Error opening document</string>
     <string name="sodk_editor_error_renaming_file">Error renaming file.</string>
     <string name="sodk_editor_error_saving_document">Error saving document.</string>
     <string name="sodk_editor_error">Error</string>
@@ -93,6 +94,7 @@
     <string name="sodk_editor_inserted_table_row">Inserted table row</string>
     <string name="sodk_editor_inserted_text">Inserted text</string>
     <string name="sodk_editor_invalid_file_name">Invalid file name.</string>
+    <string name="sodk_editor_invalid_location">Invalid location</string>
     <string name="sodk_editor_is_a_directory">\"%s\" is a directory.  Directories cannot be deleted.</string>
     <string name="sodk_editor_Japan">Japan</string>
     <string name="sodk_editor_keep_searching">Keep searching?</string>
