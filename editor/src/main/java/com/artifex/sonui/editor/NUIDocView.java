@@ -1383,6 +1383,26 @@ public class NUIDocView
                 }
                 else
                 {
+                    /*
+                     * We shouldn't get here with a null mStartUri, but
+                     * somehow we do.
+                     *
+                     * Show an error and exit.
+                     */
+                    if (mStartUri == null)
+                    {
+                        // Allow the activity to finish.
+                        mCanGoBack = true;
+
+                        Utilities.showMessageAndFinish(
+                            thisActivity,
+                            getContext().getString(
+                                R.string.sodk_editor_error_opening_doc),
+                            getContext().getString(
+                                R.string.sodk_editor_invalid_location));
+                            return;
+                    }
+
                     //  export the content to a temp file
                     Uri    uri    = mStartUri;
                     String scheme = uri.getScheme();
