@@ -1415,21 +1415,27 @@ public class NUIDocView
 
                         if (path.equals("---fileOpen"))
                         {
+                            // Allow the activity to finish.
+                            mCanGoBack = true;
+
                             //  special case indicating that the file could not be opened.
-                            Utilities.showMessage(thisActivity, getContext().getString(R.string.sodk_editor_content_error),
+                            Utilities.showMessageAndFinish(thisActivity, getContext().getString(R.string.sodk_editor_content_error),
                                     getContext().getString(R.string.sodk_editor_error_opening_from_other_app));
                             return;
                         }
 
                         if (path.startsWith("---"))
                         {
+                            // Allow the activity to finish.
+                            mCanGoBack = true;
+
                             /*
                              * if the path starts with "---", that
                              * indicates that we should display
                              * an exception message.
                              */
                             String message = getResources().getString(R.string.sodk_editor_cant_create_temp_file);
-                            Utilities.showMessage(thisActivity, getContext().getString(R.string.sodk_editor_content_error),
+                            Utilities.showMessageAndFinish(thisActivity, getContext().getString(R.string.sodk_editor_content_error),
                                     getContext().getString(R.string.sodk_editor_error_opening_from_other_app) + ": \n\n" + message);
 
                             return;
@@ -1446,7 +1452,10 @@ public class NUIDocView
 
                         if (mDocUserPath == null)
                         {
-                            Utilities.showMessage(
+                            // Allow the activity to finish.
+                            mCanGoBack = true;
+
+                            Utilities.showMessageAndFinish(
                                 thisActivity,
                                 getContext().getString(R.string.sodk_editor_invalid_file_name),
                                 getContext().getString(R.string.sodk_editor_error_opening_from_other_app));
